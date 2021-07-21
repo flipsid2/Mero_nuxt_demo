@@ -137,7 +137,7 @@ export default {
     },
     async setItem({ state, commit }, payload) {
       const { token } = payload;
-      console.log('fetchToken: code: ' + token)
+      console.log('fetchToken: token: ' + token)
       try {
         const resp = await _fetchCreate(payload)
         console.log('_fetchCreate: ' + resp)
@@ -149,7 +149,7 @@ export default {
     },
     async getItem({ state, commit }, payload) {
       const { token } = payload;
-      console.log('fetchToken: code: ' + token)
+      console.log('fetchToken: token: ' + token)
       try {
         const resp = await _fetchOrders(payload)
         console.log('_fetchOrders: ' + resp)
