@@ -142,7 +142,7 @@ export default {
         const resp = await _fetchCreate(payload)
         console.log('_fetchCreate: ' + resp)
       } catch (error) {
-        console.log("_fetchCreate error...")
+        console.log("_fetchCreate error...", error)
       } finally {
         console.log("_fetchCreate finally...")
       }
@@ -154,7 +154,7 @@ export default {
         const resp = await _fetchOrders(payload)
         console.log('_fetchOrders: ' + resp)
       } catch (error) {
-        console.log("_fetchOrders error...")
+        console.log("_fetchOrders error...", error)
       } finally {
         console.log("_fetchOrders finally...")
       }
