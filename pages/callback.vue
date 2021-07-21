@@ -165,12 +165,12 @@ export default {
     methods: {
       setItem() {
         this.$store.dispatch('oauth/setItem', {
-          token: access_token
+          token: this.aaccess_token
         })
       },
       getItem() {
         this.$store.dispatch('oauth/getItem', {
-          token: access_token
+          token: this.aaccess_token
         })
       },
     }
