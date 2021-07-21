@@ -19,6 +19,7 @@ const corsOptions = {
 let state;
 // const default_url     = 'https://personal-shopper-api.buyma.com';
 const default_dev_url = 'https://sandbox.personal-shopper-api.buyma.com';
+const default_dev_url2 = 'https://personal-shopper-sandbox.buyma.com';
 
 const redirect_uri    = CLIENT_URL + '/callback'
 app.use(express.json())
@@ -228,8 +229,8 @@ app.post('/orders', cors(corsOptions), async (req, res, next) => {
 
     console.log('Buyma /orders post : ', req.query.token);
     //GET /api/v1/orders.json?page=2&per_page=1
-    const url = default_dev_url + '/api/v1/orders.json';
-    axios.post(url, config)
+    const url = default_dev_url + '/api/v1/orders.json?page=2&per_page=1';
+    axios.get(url, config)
         .then(function (resp) {
             console.log('Buyma /orders : ', resp.data);
             res.send(resp.data);
