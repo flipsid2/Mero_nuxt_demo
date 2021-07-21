@@ -91,7 +91,7 @@ app.post('/login', cors(corsOptions), async (req, res, next) => {
 });
 
 // router.get('/user', function(req, res, next) {
-app.get('/create', cors(corsOptions), async (req, res, next) => {
+app.post('/create', cors(corsOptions), async (req, res, next) => {
     const data = {
         "product": {
             "reference_number": "ABC0001",
@@ -219,7 +219,7 @@ app.get('/create', cors(corsOptions), async (req, res, next) => {
     })
 });
 
-app.get('/orders', cors(corsOptions), async (req, res, next) => {
+app.post('/orders', cors(corsOptions), async (req, res, next) => {
     const config = {
         headers: {
             'X-Buyma-Personal-Shopper-Api-Access-Token': req.query.token
