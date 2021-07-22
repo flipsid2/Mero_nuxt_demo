@@ -226,16 +226,16 @@ app.post('/create', cors(corsOptions), async (req, res, next) => {
     // }
     const config = {
         headers: {
-            Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token ' + req.query.token
+            // Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token ' + req.query.token
+            'X-Buyma-Personal-Shopper-Api-Access-Token': req.query.token
             // 'User-Agent': 'Login-App'
-        },
-        data
+        }
     }
     
     console.log('Buyma /create post : ', req.query.token);
     // const url = default_url + '/api/v1/products/variants.json';
     // const url = default_url + '/api/v1/products.json';
-    axios.post('/api/v1/products.json', config)
+    axios.post('/api/v1/products.json', data, config)
     .then(function(resp) {
         console.log('Buyma /create : ', resp.data);
         res.send(resp.data);
@@ -261,7 +261,8 @@ app.post('/orders', cors(corsOptions), async (req, res, next) => {
     // }
     const config = {
         headers: {
-            Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token ' + req.query.token
+            // Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token ' + req.query.token
+            'X-Buyma-Personal-Shopper-Api-Access-Token': req.query.token
             // 'User-Agent': 'Login-App'
         }
     }
