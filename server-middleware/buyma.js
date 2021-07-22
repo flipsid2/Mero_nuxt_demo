@@ -93,6 +93,9 @@ app.post('/login', cors(corsOptions), async (req, res, next) => {
 
 // router.get('/user', function(req, res, next) {
 app.post('/create', cors(corsOptions), async (req, res, next) => {
+    const payload = req.body
+    const { token } = payload;
+
     const data = {
         "product": {
             "reference_number": "ABC0001",
@@ -202,17 +205,17 @@ app.post('/create', cors(corsOptions), async (req, res, next) => {
     }
     const options = {
         headers: {
-            'Accept': 'application/json',
+            // 'Accept': 'application/json',
             // Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token ' + req.query.token,
             // 'Authorization': 'Bearer ' + req.query.token,
-            'X-Buyma-Personal-Shopper-Api-Access-Token': req.query.token,
+            'X-Buyma-Personal-Shopper-Api-Access-Token': token,
             // 'Content-Type': 'application/X-Buyma-Personal-Shopper-Api-Access-Token'
-            'Content-Type': 'application/json;charset=UTF-8'
+            // 'Content-Type': 'application/json;charset=UTF-8'
         },
         data
     }
     
-    console.log('Buyma /create post : ', req.query.token);
+    console.log('Buyma /create post : ', token);
     // const url = default_url + '/api/v1/products/variants.json';
     const url = default_url + '/api/v1/products.json';
     axios.post(url, options)
