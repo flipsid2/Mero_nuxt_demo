@@ -207,12 +207,23 @@ app.post('/create', cors(corsOptions), async (req, res, next) => {
             'X-Buyma-Personal-Shopper-Api-Access-Token': req.query.token
             // 'Content-Type': 'application/X-Buyma-Personal-Shopper-Api-Access-Token'
         },
-        data
+        {
+            "product": {
+                "reference_number": "ABC0001",
+                "order_quantity": 100
+            }
+        }
     }
     
     console.log('Buyma /create post : ', req.query.token);
-    //GET /api/v1/orders.json?page=2&per_page=1
-    const url = default_dev_url + '/api/v1/products.json';
+    // POST /api/v1/products/variants.json
+    // {
+    //     "product": {
+    //     "reference_number": "ABC0001",
+    //     "order_quantity": 100
+    //     }
+    // }
+    const url = default_dev_url + '/api/v1/products/variants.json';
     axios.post(url, config)
     .then(function(resp) {
         console.log('Buyma /create : ', resp.data);
