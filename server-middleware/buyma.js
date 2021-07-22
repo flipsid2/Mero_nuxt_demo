@@ -202,10 +202,10 @@ app.post('/create', cors(corsOptions), async (req, res, next) => {
     }
     const config = {
         headers: {
-            // Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token ' + req.query.token,
+            Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token ' + req.query.token,
             // 'Authorization': 'Bearer ' + req.query.token,
-            'X-Buyma-Personal-Shopper-Api-Access-Token': req.query.token,
-            'Content-Type': 'application/X-Buyma-Personal-Shopper-Api-Access-Token'
+            // 'X-Buyma-Personal-Shopper-Api-Access-Token': req.query.token,
+            // 'Content-Type': 'application/X-Buyma-Personal-Shopper-Api-Access-Token'
         }
     }
     
@@ -225,10 +225,10 @@ app.post('/create', cors(corsOptions), async (req, res, next) => {
 app.post('/orders', cors(corsOptions), async (req, res, next) => {
     const config = {
         headers: {
-            // Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token ' + req.query.token,
+            Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token ' + req.query.token,
             // 'Authorization': 'Bearer ' + req.query.token,
-            'X-Buyma-Personal-Shopper-Api-Access-Token': req.query.token,
-            'Content-Type': 'application/X-Buyma-Personal-Shopper-Api-Access-Token'
+            // 'X-Buyma-Personal-Shopper-Api-Access-Token': req.query.token,
+            // 'Content-Type': 'application/X-Buyma-Personal-Shopper-Api-Access-Token'
         }
     }
 
