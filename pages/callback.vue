@@ -25,6 +25,16 @@
       class="state">
       {{ state }}
     </div>
+    <div
+      v-if="res_data"
+      class="res_data">
+      {{ res_data }}
+    </div>
+    <div
+      v-if="res_err"
+      class="res_err">
+      {{ res_err }}
+    </div>
     <button
       class="btn btn-primary"
       @click="setItem">
@@ -56,7 +66,9 @@ export default {
         'access_token',
         'refresh_token',
         'code',
-        'state'
+        'state',
+        'res_data',
+        'res_err'
         ])
     },
     // methods: {
