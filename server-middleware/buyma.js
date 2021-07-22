@@ -109,7 +109,7 @@ app.post('/create', cors(corsOptions), async (req, res, next) => {
 
     const data = {
         "product": {
-            "reference_number": "ABC0001",
+            "reference_number": "ABC123",
             "control": "publish",
             "name": "キルティングジャケット",
             "comments": "この度は、商品をご覧いただきありがとうございます。",
@@ -236,7 +236,7 @@ app.post('/create', cors(corsOptions), async (req, res, next) => {
     // const url = default_url + '/api/v1/products/variants.json';
     // const url = default_url + '/api/v1/products.json';
     // axios.post('/api/v1/products.json', null, config)
-    axios.post('/api/v1/products.json?', {"body":data}, config)
+    axios.post('/api/v1/products.json?', data, config)
     .then(function(resp) {
         console.log('Buyma /create : ', resp.data);
         res.send(resp.data);
