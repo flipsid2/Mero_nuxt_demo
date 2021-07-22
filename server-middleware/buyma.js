@@ -200,21 +200,22 @@ app.post('/create', cors(corsOptions), async (req, res, next) => {
             ]
         }
     }
-    const config = {
+    const options = {
         headers: {
-            Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token ' + req.query.token,
+            'Accept': 'application/json',
+            // Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token ' + req.query.token,
             // 'Authorization': 'Bearer ' + req.query.token,
-            // 'X-Buyma-Personal-Shopper-Api-Access-Token': req.query.token,
+            'X-Buyma-Personal-Shopper-Api-Access-Token': req.query.token,
             // 'Content-Type': 'application/X-Buyma-Personal-Shopper-Api-Access-Token'
             'Content-Type': 'application/json;charset=UTF-8'
         },
-        body: qs.stringify(data),
+        data
     }
     
     console.log('Buyma /create post : ', req.query.token);
     // const url = default_url + '/api/v1/products/variants.json';
     const url = default_url + '/api/v1/products.json';
-    axios.post(url, config)
+    axios.post(url, options)
     .then(function(resp) {
         console.log('Buyma /create : ', resp.data);
         res.send(resp.data);
@@ -225,8 +226,9 @@ app.post('/create', cors(corsOptions), async (req, res, next) => {
 });
 
 app.post('/orders', cors(corsOptions), async (req, res, next) => {
-    const config = {
+    const options = {
         headers: {
+            'Accept': 'application/json',
             // Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token ' + req.query.token,
             // 'Authorization': 'Bearer ' + req.query.token,
             'X-Buyma-Personal-Shopper-Api-Access-Token': req.query.token,
@@ -238,7 +240,7 @@ app.post('/orders', cors(corsOptions), async (req, res, next) => {
     console.log('Buyma /orders post : ', req.query.token);
     //GET /api/v1/orders.json?page=2&per_page=1
     const url = default_url + '/api/v1/orders.json?page=2&per_page=1';
-    axios.get(url, config)
+    axios.get(url, options)
         .then(function (resp) {
             console.log('Buyma /orders : ', resp.data);
             res.send(resp.data);
