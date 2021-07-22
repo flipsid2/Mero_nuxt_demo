@@ -20,8 +20,19 @@ const DEV_MODE              = true
 const OAUTH_CLIENT_ID       = (DEV_MODE) ? 'KFrdKSgbn4vwojkLtxW41SpSg8PtrJSmooRu6Ql8raw' : 'Ie8TK8ftZYLt0UrP-Qf3bDdJeV5Zndzf660jWVALI34';
 const OAUTH_CLIENT_SECRET   = (DEV_MODE) ? 'HLmc7EGT4g2MZ8aSYY5LUq8vCmTbspYUEQANGSFKDf0' : 'TKTmzRRAwhwdoWUdVq82V0_BsSFtwqbU8L-omRrdaVA';
 const default_url           = (DEV_MODE) ? 'https://sandbox.personal-shopper-api.buyma.com' : 'https://personal-shopper-sandbox.buyma.com';
+const redirect_uri          = CLIENT_URL + '/callback'
 
-const redirect_uri    = CLIENT_URL + '/callback'
+
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+axios.defaults.timeout = 100000;
+axios.defaults.baseURL = default_url
+
+// 캐싱 방지
+axios.defaults.headers.get['Cache-Control'] = 'no-cache';
+axios.defaults.headers.get['Pragma'] = 'no-cache';
+
+
 app.use(express.json())
 app.get('/', cors(corsOptions), async (req, res, next) => {
     state = rs.generate();
@@ -205,8 +216,7 @@ app.post('/create', cors(corsOptions), async (req, res, next) => {
     }
     const options = {
         headers: {
-            // 'Accept': 'application/json',
-            // Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token ' + req.query.token,
+            // Authorization: 'Bearer ' + token,
             // 'Authorization': 'Bearer ' + req.query.token,
             'X-Buyma-Personal-Shopper-Api-Access-Token': token,
             // 'Content-Type': 'application/X-Buyma-Personal-Shopper-Api-Access-Token'
@@ -217,8 +227,8 @@ app.post('/create', cors(corsOptions), async (req, res, next) => {
     
     console.log('Buyma /create post : ', token);
     // const url = default_url + '/api/v1/products/variants.json';
-    const url = default_url + '/api/v1/products.json';
-    axios.post(url)
+    // const url = default_url + '/api/v1/products.json';
+    axios.post('/api/v1/products.json', options)
     .then(function(resp) {
         console.log('Buyma /create : ', resp.data);
         res.send(resp.data);
@@ -234,19 +244,19 @@ app.post('/orders', cors(corsOptions), async (req, res, next) => {
 
     const options = {
         headers: {
-            'Accept': 'application/json',
-            // Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token ' + req.query.token,
+            // 'Accept': 'application/json',
+            // Authorization: 'Bearer ' + token,
             // 'Authorization': 'Bearer ' + req.query.token,
             'X-Buyma-Personal-Shopper-Api-Access-Token': token,
             // 'Content-Type': 'application/X-Buyma-Personal-Shopper-Api-Access-Token'
-            'Content-Type': 'application/json;charset=UTF-8'
+            // 'Content-Type': 'application/json;charset=UTF-8'
         }
     }
 
     console.log('Buyma /orders post : ', token);
     //GET /api/v1/orders.json?page=2&per_page=1
-    const url = default_url + '/api/v1/orders.json?page=2&per_page=1';
-    axios.get(url)
+    // const url = default_url + '/api/v1/orders.json?page=2&per_page=1';
+    axios.get('/api/v1/orders.json', options)
         .then(function (resp) {
             console.log('Buyma /orders : ', resp.data);
             res.send(resp.data);
