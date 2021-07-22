@@ -235,7 +235,8 @@ app.post('/create', cors(corsOptions), async (req, res, next) => {
     console.log('Buyma /create post : ', req.query.token);
     // const url = default_url + '/api/v1/products/variants.json';
     // const url = default_url + '/api/v1/products.json';
-    axios.post('/api/v1/products.json', null, data, config)
+    // axios.post('/api/v1/products.json', null, config)
+    axios.post('/api/v1/products.json', {"body":data}, config)
     .then(function(resp) {
         console.log('Buyma /create : ', resp.data);
         res.send(resp.data);
