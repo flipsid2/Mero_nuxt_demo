@@ -19,7 +19,7 @@ let state;
 const DEV_MODE              = true
 const OAUTH_CLIENT_ID       = (DEV_MODE) ? 'KFrdKSgbn4vwojkLtxW41SpSg8PtrJSmooRu6Ql8raw' : 'Ie8TK8ftZYLt0UrP-Qf3bDdJeV5Zndzf660jWVALI34';
 const OAUTH_CLIENT_SECRET   = (DEV_MODE) ? 'HLmc7EGT4g2MZ8aSYY5LUq8vCmTbspYUEQANGSFKDf0' : 'TKTmzRRAwhwdoWUdVq82V0_BsSFtwqbU8L-omRrdaVA';
-const default_url           = (DEV_MODE) ? 'https://sandbox.personal-shopper-api.buyma.com' : 'https://personal-shopper-sandbox.buyma.com';
+const default_url           = (DEV_MODE) ? 'https://sandbox.personal-shopper-api.buyma.com' : 'https://personal-shopper-api.buyma.com';
 const redirect_uri          = CLIENT_URL + '/callback'
 
 
@@ -226,7 +226,7 @@ app.post('/create', cors(corsOptions), async (req, res, next) => {
     // }
     const config = {
         headers: {
-            Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token',
+            // Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token',
             'X-Buyma-Personal-Shopper-Api-Access-Token': req.query.token
             // 'User-Agent': 'Login-App'
         }
@@ -262,7 +262,7 @@ app.post('/orders', cors(corsOptions), async (req, res, next) => {
     // }
     const config = {
         headers: {
-            Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token',
+            // Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token',
             'X-Buyma-Personal-Shopper-Api-Access-Token': req.query.token
             // 'User-Agent': 'Login-App'
         }
