@@ -172,7 +172,7 @@ export default {
           headers: {
             // Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token ' + req.query.token,
             // 'Authorization': 'Bearer ' + req.query.token,
-            'X-Buyma-Personal-Shopper-Api-Access-Token': req.query.token,
+            'X-Buyma-Personal-Shopper-Api-Access-Token': this.access_token,
             'Content-Type': 'application/json'
           }
         }
@@ -193,7 +193,7 @@ export default {
         const default_dev_url = 'https://sandbox.personal-shopper-api.buyma.com';
         const config = {
           headers: {
-            Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token ' + req.query.token,
+            Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token ' + this.access_token,
             // 'Authorization': 'Bearer ' + req.query.token,
             // 'X-Buyma-Personal-Shopper-Api-Access-Token': req.query.token,
             'Content-Type': 'application/json'
