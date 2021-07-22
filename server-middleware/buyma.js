@@ -5,11 +5,9 @@ const cors = require('cors');
 const axios = require('axios');
 
 const app = express()
-const { OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET, CLIENT_URL } = process.env;
+const { CLIENT_URL } = process.env;
 
 const corsOptions = {
-    // origin: 'https://mero-nuxt-demo.herokuapp.com',
-    // origin: 'https://sandbox.personal-shopper-api.buyma.com',
     origin: 'http://localhost:3000',
     Credentials: true,
 };
@@ -17,9 +15,11 @@ const corsOptions = {
 // app.use(cors(corsOptions));
 
 let state;
-// const default_url     = 'https://personal-shopper-api.buyma.com';
-const default_dev_url = 'https://sandbox.personal-shopper-api.buyma.com';
-const default_dev_url2 = 'https://personal-shopper-sandbox.buyma.com';
+// const default_url        = 'https://personal-shopper-api.buyma.com';
+const DEV_MODE              = false
+const OAUTH_CLIENT_ID       = (DEV_MODE) ? 'KFrdKSgbn4vwojkLtxW41SpSg8PtrJSmooRu6Ql8raw' : 'Ie8TK8ftZYLt0UrP-Qf3bDdJeV5Zndzf660jWVALI34';
+const OAUTH_CLIENT_SECRET   = (DEV_MODE) ? 'HLmc7EGT4g2MZ8aSYY5LUq8vCmTbspYUEQANGSFKDf0' : 'TKTmzRRAwhwdoWUdVq82V0_BsSFtwqbU8L-omRrdaVA';
+const default_url           = (DEV_MODE) ? 'https://sandbox.personal-shopper-api.buyma.com' : 'https://personal-shopper-sandbox.buyma.com';
 
 const redirect_uri    = CLIENT_URL + '/callback'
 app.use(express.json())
@@ -32,7 +32,7 @@ app.get('/', cors(corsOptions), async (req, res, next) => {
         redirect_uri: redirect_uri,
         state: state,
     });
-    const url = default_dev_url + '/oauth/authorize?';
+    const url = default_url + '/oauth/authorize?';
     const buymaAuthUrl = url + query;
     console.log('buyma 00 / : ', buymaAuthUrl);
 
@@ -55,7 +55,7 @@ app.post('/login', cors(corsOptions), async (req, res, next) => {
     //     res.send(false);
     // }
 
-    const host = default_dev_url + '/oauth/token?'
+    const host = default_url + '/oauth/token?'
     const queryString = qs.stringify({
         code: returncode,
         client_id: OAUTH_CLIENT_ID,
@@ -223,7 +223,7 @@ app.post('/create', cors(corsOptions), async (req, res, next) => {
     //     "order_quantity": 100
     //     }
     // }
-    const url = default_dev_url + '/api/v1/products/variants.json';
+    const url = default_url + '/api/v1/products/variants.json';
     axios.post(url, config)
     .then(function(resp) {
         console.log('Buyma /create : ', resp.data);
@@ -246,7 +246,7 @@ app.post('/orders', cors(corsOptions), async (req, res, next) => {
 
     console.log('Buyma /orders post : ', req.query.token);
     //GET /api/v1/orders.json?page=2&per_page=1
-    const url = default_dev_url + '/api/v1/orders.json?page=2&per_page=1';
+    const url = default_url + '/api/v1/orders.json?page=2&per_page=1';
     axios.get(url, config)
         .then(function (resp) {
             console.log('Buyma /orders : ', resp.data);

@@ -61,17 +61,18 @@ export default {
                 // } catch (error) {
                 //     redirect('/')
                 // }
-                const CLIENT_URL = 'https://mero-nuxt-demo.herokuapp.com'
-                const redirect_uri    = CLIENT_URL + '/callback'
-                const OAUTH_CLIENT_ID = 'KFrdKSgbn4vwojkLtxW41SpSg8PtrJSmooRu6Ql8raw'
-                const default_dev_url = 'https://sandbox.personal-shopper-api.buyma.com';
+                const CLIENT_URL        = 'https://mero-nuxt-demo.herokuapp.com'
+                const redirect_uri      = CLIENT_URL + '/callback'
+                const DEV_MODE          = false
+                const OAUTH_CLIENT_ID   = (DEV_MODE) ? 'KFrdKSgbn4vwojkLtxW41SpSg8PtrJSmooRu6Ql8raw' : 'Ie8TK8ftZYLt0UrP-Qf3bDdJeV5Zndzf660jWVALI34';
+                const default_url       = (DEV_MODE) ? 'https://sandbox.personal-shopper-api.buyma.com' : 'https://personal-shopper-sandbox.buyma.com';
                 const query = qs.stringify({
                     response_type: 'code',
                     client_id: OAUTH_CLIENT_ID,
                     redirect_uri: redirect_uri,
                     state: state,
                 });
-                const url = default_dev_url + '/oauth/authorize?';
+                const url = default_url + '/oauth/authorize?';
                 const buymaAuthUrl = url + query;
                 console.log(buymaAuthUrl)
 
@@ -85,8 +86,10 @@ export default {
                 });
             } else if(this.service === 'buyma2') {
                 const state = rs.generate();
-                const OAUTH_CLIENT_ID = 'KFrdKSgbn4vwojkLtxW41SpSg8PtrJSmooRu6Ql8raw'
-                const url=`https://sandbox.personal-shopper-api.buyma.com/oauth/authorize?response_type=code&client_id=${OAUTH_CLIENT_ID}&redirect_uri=https://mero-nuxt-demo.herokuapp.com/callback&state=${state}`
+                const DEV_MODE          = false
+                const OAUTH_CLIENT_ID   = (DEV_MODE) ? 'KFrdKSgbn4vwojkLtxW41SpSg8PtrJSmooRu6Ql8raw' : 'Ie8TK8ftZYLt0UrP-Qf3bDdJeV5Zndzf660jWVALI34';
+                const default_url       = (DEV_MODE) ? 'https://sandbox.personal-shopper-api.buyma.com' : 'https://personal-shopper-sandbox.buyma.com';
+                const url=`${default_url}/oauth/authorize?response_type=code&client_id=${OAUTH_CLIENT_ID}&redirect_uri=https://mero-nuxt-demo.herokuapp.com/callback&state=${state}`
                 console.log(url)
                 redirect(url)
             } else if(this.service === 'buyma3') {
