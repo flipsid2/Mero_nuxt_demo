@@ -164,49 +164,13 @@ export default {
     },
     methods: {
       setItem() {
-        // this.$store.dispatch('oauth/setItem', {
-        //   token: this.access_token
-        // })
-        const default_dev_url = 'https://sandbox.personal-shopper-api.buyma.com';
-        const config = {
-          headers: {
-            // Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token ' + req.query.token,
-            // 'Authorization': 'Bearer ' + req.query.token,
-            'X-Buyma-Personal-Shopper-Api-Access-Token': this.access_token,
-            'Content-Type': 'application/json'
-          }
-        }
-        const url = default_dev_url + '/api/v1/orders.json?page=2&per_page=1';
-        axios.get(url, config)
-        .then(function (resp) {
-            console.log('Buyma setItem/orders : ', resp.data);
-            // res.send(resp.data);
-        })
-        .catch(function (err) {
-            console.log(err)
+        this.$store.dispatch('oauth/setItem', {
+          token: this.access_token
         })
       },
       getItem() {
-        // this.$store.dispatch('oauth/getItem', {
-        //   token: this.access_token
-        // })
-        const default_dev_url = 'https://sandbox.personal-shopper-api.buyma.com';
-        const config = {
-          headers: {
-            Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token ' + this.access_token,
-            // 'Authorization': 'Bearer ' + req.query.token,
-            // 'X-Buyma-Personal-Shopper-Api-Access-Token': req.query.token,
-            'Content-Type': 'application/json'
-          }
-        }
-        const url = default_dev_url + '/api/v1/orders.json?page=2&per_page=1';
-        axios.get(url, config)
-        .then(function (resp) {
-            console.log('Buyma getItem/orders : ', resp.data);
-            // res.send(resp.data);
-        })
-        .catch(function (err) {
-            console.log(err)
+        this.$store.dispatch('oauth/getItem', {
+          token: this.access_token
         })
       },
     }

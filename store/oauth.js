@@ -14,7 +14,9 @@ export default {
     access_token: 'Default',
     returncode: '0000',
     returnstate: '0000',
-    refresh_token: 'Default'
+    refresh_token: 'Default',
+    res_data: '',
+    res_err: ''
   }),
 
   // Vue.js computed 옵션과 유사합니다.
@@ -33,6 +35,8 @@ export default {
       state.returnstate = '0000'
       state.access_token = 'Default'
       state.refresh_token = 'Default'
+      state.res_data = ''
+      state.res_error = ''
     }
   },
 
@@ -141,8 +145,14 @@ export default {
       try {
         const resp = await _fetchCreate(payload)
         console.log('_fetchCreate: ' + resp)
+        commit('updateState', {
+          res_data: resp.data
+        })
       } catch (error) {
         console.log("_fetchCreate error...", error)
+        commit('updateState', {
+          res_err: error
+        })
       } finally {
         console.log("_fetchCreate finally...")
       }
@@ -153,8 +163,14 @@ export default {
       try {
         const resp = await _fetchOrders(payload)
         console.log('_fetchOrders: ' + resp)
+        commit('updateState', {
+          res_data: resp.data
+        })
       } catch (error) {
         console.log("_fetchOrders error...", error)
+        commit('updateState', {
+          res_err: error
+        })
       } finally {
         console.log("_fetchOrders finally...")
       }
