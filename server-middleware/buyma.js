@@ -264,8 +264,8 @@ app.post('/orders', cors(corsOptions), async (req, res, next) => {
     const config = {
         headers: {
             // Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token',
-            Authorization: 'Bearer ' + req.query.token,
-            'X-Buyma-Personal-Shopper-Api-Access-Token': req.query.token
+            Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token ' + req.query.token
+            // 'X-Buyma-Personal-Shopper-Api-Access-Token': req.query.token
             // 'User-Agent': 'Login-App'
         }
     }
