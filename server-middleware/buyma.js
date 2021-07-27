@@ -239,11 +239,16 @@ app.post('/create', cors(corsOptions), async (req, res, next) => {
     // axios.post('/api/v1/products.json', null, config)
     axios.post('/api/v1/products.json?', data, config)
     .then(function(resp) {
-        console.log('Buyma /create : ', resp.data);
-        res.send(resp.data);
+        if (resp.data.Error) {
+            res.status(400)
+            .json(resp.data.Error)
+        }
+        res.status(200)
+        .json(resp.data)
     })
-    .catch(function(err) {
-        console.log(err)
+    .catch(function(err) {        
+        res.status(err.response.status)
+        .json(err.message)
     })
 });
 
@@ -275,13 +280,18 @@ app.post('/orders', cors(corsOptions), async (req, res, next) => {
     //GET /api/v1/orders.json?page=2&per_page=1
     // const url = default_url + '/api/v1/orders.json?page=2&per_page=1';
     axios.get('/api/v1/orders.json', config)
-        .then(function (resp) {
-            console.log('Buyma /orders : ', resp.data);
-            res.send(resp.data);
-        })
-        .catch(function (err) {
-            console.log(err)
-        })
+    .then(function (resp) {
+        if (resp.data.Error) {
+            res.status(400)
+            .json(resp.data.Error)
+        }
+        res.status(200)
+        .json(resp.data)
+    })
+    .catch(function(err) {        
+        res.status(err.response.status)
+        .json(err.message)
+    })
 });
 
 module.exports = app;
