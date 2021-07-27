@@ -27,7 +27,7 @@ axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.defaults.headers.get['Content-Type'] = 'application/json';
 axios.defaults.timeout = 100000;
-axios.defaults.baseURL = default_url
+// axios.defaults.baseURL = default_url
 
 // 캐싱 방지
 axios.defaults.headers.get['Cache-Control'] = 'no-cache';
@@ -235,9 +235,9 @@ app.post('/create', cors(corsOptions), async (req, res, next) => {
     
     console.log('Buyma /create post : ', req.query.token);
     // const url = default_url + '/api/v1/products/variants.json';
-    // const url = default_url + '/api/v1/products.json';
+    const url = default_url + '/api/v1/products.json';
     // axios.post('/api/v1/products.json', null, config)
-    axios.post('/api/v1/products.json', data, config)
+    axios.post(url, data, config)
     .then(function(resp) {
         if (resp.data.Error) {
             res.status(400)
@@ -274,9 +274,10 @@ app.post('/orders', cors(corsOptions), async (req, res, next) => {
     }
 
     console.log('Buyma /orders post : ', req.query.token);
+
     //GET /api/v1/orders.json?page=2&per_page=1
-    // const url = default_url + '/api/v1/orders.json?page=2&per_page=1';
-    axios.get('/api/v1/orders.json', config)
+    const url = default_url + '/api/v1/orders.json?page=2&per_page=1';
+    axios.get(url, config)
     .then(function (resp) {
         if (resp.data.Error) {
             res.status(400)
