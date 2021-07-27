@@ -263,7 +263,7 @@ app.post('/orders', cors(corsOptions), async (req, res, next) => {
     // }
     const config = {
         headers: {
-            Authorization: 'token ' + req.query.token,
+            Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token',
             // Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token',
             // Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token:' + req.query.token
             'X-Buyma-Personal-Shopper-Api-Access-Token': req.query.token
@@ -274,7 +274,7 @@ app.post('/orders', cors(corsOptions), async (req, res, next) => {
     console.log('Buyma /orders post : ', req.query.token);
     //GET /api/v1/orders.json?page=2&per_page=1
     // const url = default_url + '/api/v1/orders.json?page=2&per_page=1';
-    axios.get('https://sandbox.personal-shopper-api.buyma.com/api/v1/orders.json?page=2&per_page=1', config)
+    axios.get('/api/v1/orders.json', config)
         .then(function (resp) {
             console.log('Buyma /orders : ', resp.data);
             res.send(resp.data);
