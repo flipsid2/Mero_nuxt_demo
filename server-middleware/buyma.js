@@ -105,8 +105,8 @@ app.post('/login', cors(corsOptions), async (req, res, next) => {
 
 // router.get('/user', function(req, res, next) {
 app.post('/create', cors(corsOptions), async (req, res, next) => {
-    // const payload = req.body
-    // const { token } = payload;
+    const payload = req.body
+    const { token } = payload;
 
     const data = {
         "product": {
@@ -227,13 +227,13 @@ app.post('/create', cors(corsOptions), async (req, res, next) => {
     // }
     const config = {
         headers: {
-            Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token ' + req.query.token
-            // 'X-Buyma-Personal-Shopper-Api-Access-Token': req.query.token
+            // Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token ' + req.query.token
+            'X-Buyma-Personal-Shopper-Api-Access-Token': token
             // 'User-Agent': 'Login-App'
         }
     }
     
-    console.log('Buyma /create post : ', req.query.token);
+    console.log('Buyma /create post : ', token);
     // const url = default_url + '/api/v1/products/variants.json';
     const url = default_url + '/api/v1/products.json';
 
@@ -266,8 +266,8 @@ app.post('/create', cors(corsOptions), async (req, res, next) => {
 });
 
 app.post('/orders', cors(corsOptions), async (req, res, next) => {
-    // const payload = req.body
-    // const { token } = payload;or
+    const payload = req.body
+    const { token } = payload
 
     // const options = {
     //     headers: {
@@ -281,12 +281,12 @@ app.post('/orders', cors(corsOptions), async (req, res, next) => {
     // }
     const config = {
         headers: {
-            Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token ' + req.query.token
-            // 'X-Buyma-Personal-Shopper-Api-Access-Token': req.query.token
+            // Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token ' + req.query.token
+            'X-Buyma-Personal-Shopper-Api-Access-Token': token
         }
     }
 
-    console.log('Buyma /orders post : ', req.query.token);
+    console.log('Buyma /orders post : ', token);
 
     //GET /api/v1/orders.json?page=2&per_page=1
     const url = default_url + '/api/v1/orders.json?page=1&per_page=1';
