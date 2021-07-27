@@ -236,25 +236,38 @@ app.post('/create', cors(corsOptions), async (req, res, next) => {
     console.log('Buyma /create post : ', req.query.token);
     // const url = default_url + '/api/v1/products/variants.json';
     const url = default_url + '/api/v1/products.json';
-    // axios.post('/api/v1/products.json', null, config)
-    axios.post(url, data, config)
-    .then(function(resp) {
-        if (resp.data.Error) {
+
+    try {
+        const { data } = await axios.post(url, data, config);
+        if (data.Error) {
             res.status(400)
-            .json(resp.data.Error)
+            .json(data.Error)
         }
         res.status(200)
-        .json(resp.data)
-    })
-    .catch(function(err) {        
-        res.status(err.response.status)
-        .json(err.message)
-    })
+            .json(data)
+    } catch (error) {
+        res.status(error.response.status)
+            .json(error.message)
+    }
+    // axios.post('/api/v1/products.json', null, config)
+    // axios.post(url, data, config)
+    // .then(function(resp) {
+    //     if (resp.data.Error) {
+    //         res.status(400)
+    //         .json(resp.data.Error)
+    //     }
+    //     res.status(200)
+    //     .json(resp.data)
+    // })
+    // .catch(function(err) {        
+    //     res.status(err.response.status)
+    //     .json(err.message)
+    // })
 });
 
 app.post('/orders', cors(corsOptions), async (req, res, next) => {
     // const payload = req.body
-    // const { token } = payload;
+    // const { token } = payload;or
 
     // const options = {
     //     headers: {
@@ -277,19 +290,32 @@ app.post('/orders', cors(corsOptions), async (req, res, next) => {
 
     //GET /api/v1/orders.json?page=2&per_page=1
     const url = default_url + '/api/v1/orders.json?page=1&per_page=1';
-    axios.get(url, config)
-    .then(function (resp) {
-        if (resp.data.Error) {
+    try {
+        const { data } = await axios.get(url, config);
+        if (data.Error) {
             res.status(400)
-            .json(resp.data.Error)
+            .json(data.Error)
         }
         res.status(200)
-        .json(resp.data)
-    })
-    .catch(function(err) {        
-        res.status(err.response.status)
-        .json(err.message)
-    })
+            .json(data)
+    } catch (error) {
+        res.status(error.response.status)
+            .json(error.message)
+    }
+
+    // axios.get(url, config)
+    // .then(function (resp) {
+    //     if (resp.data.Error) {
+    //         res.status(400)
+    //         .json(resp.data.Error)
+    //     }
+    //     res.status(200)
+    //     .json(resp.data)
+    // })
+    // .catch(function(err) {        
+    //     res.status(err.response.status)
+    //     .json(err.message)
+    // })
 });
 
 module.exports = app;
