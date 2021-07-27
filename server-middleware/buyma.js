@@ -227,8 +227,8 @@ app.post('/create', cors(corsOptions), async (req, res, next) => {
     // }
     const config = {
         headers: {
-            // Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token ' + req.query.token
-            'X-Buyma-Personal-Shopper-Api-Access-Token': req.query.token
+            Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token: ' + req.query.token
+            // 'X-Buyma-Personal-Shopper-Api-Access-Token': req.query.token
             // 'User-Agent': 'Login-App'
         }
     }
@@ -237,7 +237,7 @@ app.post('/create', cors(corsOptions), async (req, res, next) => {
     // const url = default_url + '/api/v1/products/variants.json';
     // const url = default_url + '/api/v1/products.json';
     // axios.post('/api/v1/products.json', null, config)
-    axios.post('/api/v1/products.json?', data, config)
+    axios.post('/api/v1/products.json', data, config)
     .then(function(resp) {
         if (resp.data.Error) {
             res.status(400)
@@ -268,8 +268,8 @@ app.post('/orders', cors(corsOptions), async (req, res, next) => {
     // }
     const config = {
         headers: {
-            // Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token ' + req.query.token
-            'X-Buyma-Personal-Shopper-Api-Access-Token': req.query.token
+            Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token: ' + req.query.token
+            // 'X-Buyma-Personal-Shopper-Api-Access-Token': req.query.token
         }
     }
 
