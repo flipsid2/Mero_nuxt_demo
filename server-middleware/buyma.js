@@ -267,7 +267,7 @@ app.post('/create', cors(corsOptions), async (req, res, next) => {
 
 app.post('/orders', cors(corsOptions), async (req, res, next) => {
     const payload = req.body
-    const { token, uid } = payload
+    const { token } = payload
 
     // const options = {
     //     headers: {
@@ -289,9 +289,8 @@ app.post('/orders', cors(corsOptions), async (req, res, next) => {
     console.log('Buyma /orders post : ', token);
 
     //GET /api/v1/orders.json?page=2&per_page=1
-    const url = default_url + '/api/v1/orders.json';
-    if (uid) 
-        url = default_url + '/api/v1/orders/' + uid;
+    // const url = default_url + '/api/v1/orders.json';
+    const url = default_url + '/api/v1/orders/ABC123';
     try {
         const { data } = await axios.get(url, config);
         if (data.Error) {
