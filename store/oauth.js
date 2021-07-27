@@ -17,7 +17,7 @@ export default {
     refresh_token: 'Default',
     res_data: '',
     res_err: '',
-    res_id = ''
+    res_id: ''
   }),
 
   // Vue.js computed 옵션과 유사합니다.
