@@ -25,6 +25,7 @@ const redirect_uri          = CLIENT_URL + '/callback'
 
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
+axios.defaults.headers.get['Content-Type'] = 'application/json';
 axios.defaults.timeout = 100000;
 axios.defaults.baseURL = default_url
 
@@ -263,6 +264,7 @@ app.post('/orders', cors(corsOptions), async (req, res, next) => {
     const config = {
         headers: {
             // Authorization: 'X-Buyma-Personal-Shopper-Api-Access-Token',
+            Authorization: 'token ' + req.query.token,
             'X-Buyma-Personal-Shopper-Api-Access-Token': req.query.token
             // 'User-Agent': 'Login-App'
         }
@@ -271,7 +273,7 @@ app.post('/orders', cors(corsOptions), async (req, res, next) => {
     console.log('Buyma /orders post : ', req.query.token);
     //GET /api/v1/orders.json?page=2&per_page=1
     // const url = default_url + '/api/v1/orders.json?page=2&per_page=1';
-    axios.get('/api/v1/orders.json?page=2&per_page=1', config)
+    axios.get('https://sandbox.personal-shopper-api.buyma.com/api/v1/orders.json?page=2&per_page=1', config)
         .then(function (resp) {
             console.log('Buyma /orders : ', resp.data);
             res.send(resp.data);
