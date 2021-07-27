@@ -26,6 +26,11 @@
       {{ state }}
     </div>
     <div
+      v-if="res_id"
+      class="res_id">
+      {{ res_id }}
+    </div>
+    <div
       v-if="res_data"
       class="res_data">
       {{ res_data }}
@@ -68,7 +73,8 @@ export default {
         'code',
         'state',
         'res_data',
-        'res_err'
+        'res_err',
+        'res_id'
         ])
     },
     // methods: {
@@ -108,7 +114,8 @@ export default {
       },
       getItem() {
         this.$store.dispatch('oauth/getItem', {
-          token: this.access_token
+          token: this.access_token,
+          uid: this.res_id
         })
       },
     }
