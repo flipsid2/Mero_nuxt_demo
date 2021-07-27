@@ -276,7 +276,7 @@ app.post('/orders', cors(corsOptions), async (req, res, next) => {
     console.log('Buyma /orders post : ', req.query.token);
 
     //GET /api/v1/orders.json?page=2&per_page=1
-    const url = default_url + '/api/v1/orders.json?page=2&per_page=1';
+    const url = default_url + '/api/v1/orders.json';
     axios.get(url, config)
     .then(function (resp) {
         if (resp.data.Error) {
