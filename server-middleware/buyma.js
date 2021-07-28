@@ -285,12 +285,16 @@ app.post('/orders', cors(corsOptions), async (req, res, next) => {
             'X-Buyma-Personal-Shopper-Api-Access-Token': token
         }
     }
-
+    const param = {
+        "product": {
+            "reference_number": "ABC123"
+        }
+    }
     console.log('Buyma /orders post : ', token);
 
     //GET /api/v1/orders.json?page=2&per_page=1
-    // const url = default_url + '/api/v1/orders.json';
-    const url = default_url + '/api/v1/orders/ABC123';
+    const url = default_url + '/api/v1/orders.json';
+    // const url = default_url + '/api/v1/orders/ABC123';
     try {
         const { data } = await axios.get(url, config);
         if (data.Error) {
