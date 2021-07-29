@@ -296,13 +296,13 @@ app.post('/orders', cors(corsOptions), async (req, res, next) => {
     const url = default_url + '/api/v1/orders.json?page=1&per_page=100';
     // const url = default_url + '/api/v1/orders/ABC123';
     try {
-        const { data } = await axios.get(url, config);
-        if (data.Error) {
+        const resp = await axios.get(url, config);
+        if (resp.data.Error) {
             res.status(400)
-            .json(data.Error)
+            .json(resp.data.Error)
         }
         res.status(200)
-            .json(data)
+            .json(resp)
     } catch (error) {
         res.status(error.response.status)
             .json(error.message)
