@@ -164,7 +164,7 @@ export default {
         const resp = await _fetchOrders(payload)
         console.log('_fetchOrders: ' + resp)
         commit('updateState', {
-          res_data: resp
+          res_data: resp.data
         })
       } catch (error) {
         console.log("_fetchOrders error...", error)
