@@ -296,14 +296,13 @@ app.post('/orders', cors(corsOptions), async (req, res, next) => {
     const url = default_url + '/api/v1/orders.json';
     // const url = default_url + '/api/v1/orders/ABC123';
     try {
-        const resp = await axios.get(url, config);
-        if (resp.data.Error) {
+        const { data } = await axios.get(url, config);
+        if (data.Error) {
             res.status(400)
-            .json(resp.data.Error)
+            .json(data.Error)
         }
-        // res.status(200)
-            // .json(data)
-        res.send(resp)
+        res.status(200)
+            .json(data)
     } catch (error) {
         res.status(error.response.status)
             .json(error.message)
