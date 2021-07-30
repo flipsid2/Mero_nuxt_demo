@@ -16,7 +16,7 @@ const corsOptions = {
 
 let state;
 // const default_url        = 'https://personal-shopper-api.buyma.com';
-const DEV_MODE              = false
+const DEV_MODE              = true
 const OAUTH_CLIENT_ID       = (DEV_MODE) ? 'KFrdKSgbn4vwojkLtxW41SpSg8PtrJSmooRu6Ql8raw' : 'Ie8TK8ftZYLt0UrP-Qf3bDdJeV5Zndzf660jWVALI34';
 const OAUTH_CLIENT_SECRET   = (DEV_MODE) ? 'HLmc7EGT4g2MZ8aSYY5LUq8vCmTbspYUEQANGSFKDf0' : 'TKTmzRRAwhwdoWUdVq82V0_BsSFtwqbU8L-omRrdaVA';
 const default_url           = (DEV_MODE) ? 'https://sandbox.personal-shopper-api.buyma.com' : 'https://personal-shopper-api.buyma.com';
