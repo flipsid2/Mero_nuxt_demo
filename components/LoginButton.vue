@@ -93,14 +93,13 @@ export default {
                 console.log(url)
                 redirect(url)
             } else if(this.service === 'buyma3') {
-                axios.get('/api/buyma')
-                .then(function(res) {
-                    console.log('LoginButton:', res.data);
-                    redirect(res.data);
-                })
-                .catch(function(err) {
-                    console.log(err)
-                });
+                const state = rs.generate();
+                const DEV_MODE          = false
+                const OAUTH_CLIENT_ID   = (DEV_MODE) ? 'KFrdKSgbn4vwojkLtxW41SpSg8PtrJSmooRu6Ql8raw' : 'Ie8TK8ftZYLt0UrP-Qf3bDdJeV5Zndzf660jWVALI34';
+                const default_url       = (DEV_MODE) ? 'https://sandbox.personal-shopper-api.buyma.com' : 'https://personal-shopper-api.buyma.com';
+                const url=`${default_url}/oauth/authorize?response_type=code&client_id=${OAUTH_CLIENT_ID}&redirect_uri=https://mero-nuxt-demo.herokuapp.com/callback&state=${state}`
+                console.log(url)
+                redirect(url)
             } else {
                 axios.get(`/api/${this.service}`)
                 .then(function(res) {
