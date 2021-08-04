@@ -46,7 +46,7 @@ export default {
       type: 'movie',
       number: 10,
       year: '',
-      services: ['github', 'buyma1', 'buyma2', 'buyma3'],
+      services: ['github', 'buyma3', 'database/1', 'database/2', 'database/3'],
       filters:  [
         {
           name: 'type',

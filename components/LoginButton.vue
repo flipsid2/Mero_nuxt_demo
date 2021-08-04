@@ -86,7 +86,7 @@ export default {
                 });
             } else if(this.service === 'buyma2') {
                 const state = rs.generate();
-                const DEV_MODE          = true
+                const DEV_MODE          = true  // SandBox용
                 const OAUTH_CLIENT_ID   = (DEV_MODE) ? 'KFrdKSgbn4vwojkLtxW41SpSg8PtrJSmooRu6Ql8raw' : 'Ie8TK8ftZYLt0UrP-Qf3bDdJeV5Zndzf660jWVALI34';
                 const default_url       = (DEV_MODE) ? 'https://sandbox.personal-shopper-api.buyma.com' : 'https://personal-shopper-api.buyma.com';
                 const url=`${default_url}/oauth/authorize?response_type=code&client_id=${OAUTH_CLIENT_ID}&redirect_uri=https://mero-nuxt-demo.herokuapp.com/callback&state=${state}`
@@ -94,12 +94,36 @@ export default {
                 redirect(url)
             } else if(this.service === 'buyma3') {
                 const state = rs.generate();
-                const DEV_MODE          = false
+                const DEV_MODE          = false // Real용
                 const OAUTH_CLIENT_ID   = (DEV_MODE) ? 'KFrdKSgbn4vwojkLtxW41SpSg8PtrJSmooRu6Ql8raw' : 'Ie8TK8ftZYLt0UrP-Qf3bDdJeV5Zndzf660jWVALI34';
                 const default_url       = (DEV_MODE) ? 'https://sandbox.personal-shopper-api.buyma.com' : 'https://personal-shopper-api.buyma.com';
                 const url=`${default_url}/oauth/authorize?response_type=code&client_id=${OAUTH_CLIENT_ID}&redirect_uri=https://mero-nuxt-demo.herokuapp.com/callback&state=${state}`
                 console.log(url)
                 redirect(url)
+            } else if(this.service === 'database/1') {
+                axios.get(`/api/${this.service}`)
+                .then(function(res) {
+                    console.log('database1:', res.data);
+                })
+                .catch(function(err) {
+                    console.log(err)
+                });
+            } else if(this.service === 'database/2') {
+                axios.get(`/api/${this.service}`)
+                .then(function(res) {
+                    console.log('database2:', res.data);
+                })
+                .catch(function(err) {
+                    console.log(err)
+                });
+            } else if(this.service === 'database/3') {
+                axios.get(`/api/${this.service}`)
+                .then(function(res) {
+                    console.log('database3:', res.data);
+                })
+                .catch(function(err) {
+                    console.log(err)
+                });
             } else {
                 axios.get(`/api/${this.service}`)
                 .then(function(res) {

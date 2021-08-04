@@ -92,6 +92,10 @@ export default {
       handler: '~/server-middleware/buyma.js' 
     },
     {  
+      path: '/api/database', 
+      handler: '~/server-middleware/database.js' 
+    },
+    {  
       path: '/api/github', 
       handler: '~/server-middleware/github.js' 
     },    
