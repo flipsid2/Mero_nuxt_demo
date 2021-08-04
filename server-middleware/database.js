@@ -28,7 +28,7 @@ app.get('/:type', function (req, res) {
   let setQuery = '';
   switch (type) {
     case '1':
-      setQuery = 'select * from test_table';
+      setQuery = 'select * from test_table order by name';
       break;
     // case '2':
     //   setQuery = 'select * from test_table group by timestamp';
