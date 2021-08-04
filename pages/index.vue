@@ -3,6 +3,7 @@
     <Headline />
     <Search />
     <MovieList />
+    <DataTable />
   </div>
 </template>
 
@@ -10,12 +11,14 @@
 import Headline from '~/components/Headline'
 import Search from '~/components/Search'
 import MovieList from '~/components/MovieList'
+import DataTable from '~/components/DataTable'
 
 export default {
   components: {
     Headline,
     Search,
-    MovieList
+    MovieList,
+    DataTable
   },
   created() {
     this.$store.commit('movie/resetMovies')
