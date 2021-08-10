@@ -1,16 +1,98 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="desserts"
-    :items-per-page="5"
-    class="elevation-1"
-  ></v-data-table>
+  <v-app>
+    <v-card
+      class="overflow-auto"
+      max-height="600"
+      max-width="2000"
+      justify="center"
+      align="center"
+    >
+      <v-data-table
+        :headers="headers"
+        :items="desserts"
+        class="[item.selected && 'selected']"
+        @click:row="handleClick"
+        @contextmenu:row="handleRightClick"
+      >
+        <template v-slot:item.name="props">
+          <v-edit-dialog
+            :return-value.sync="props.item.name"
+            @save="save"
+            @cancel="cancel"
+            @open="open"
+            @close="close"
+          >
+            {{ props.item.name }}
+            <template v-slot:input>
+              <v-text-field
+                v-model="props.item.name"
+                :rules="[max25chars]"
+                label="Edit"
+                single-line
+                counter
+              ></v-text-field>
+            </template>
+          </v-edit-dialog>
+        </template>
+        <template v-slot:item.iron="props">
+          <v-edit-dialog
+            :return-value.sync="props.item.iron"
+            large
+            persistent
+            @save="save"
+            @cancel="cancel"
+            @open="open"
+            @close="close"
+          >
+            <div>{{ props.item.iron }}</div>
+            <template v-slot:input>
+              <div class="mt-4 text-h6">
+                Update Iron
+              </div>
+              <v-text-field
+                v-model="props.item.iron"
+                :rules="[max25chars]"
+                label="Edit"
+                single-line
+                counter
+                autofocus
+              ></v-text-field>
+            </template>
+          </v-edit-dialog>
+        </template>
+      </v-data-table>
+
+      <v-snackbar
+        v-model="snack"
+        :timeout="3000"
+        :color="snackColor"
+      >
+        {{ snackText }}
+
+        <template v-slot:action="{ attrs }">
+          <v-btn
+            v-bind="attrs"
+            text
+            @click="snack = false"
+          >
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
+    </v-card>
+  </v-app>
 </template>
+
 
 <script>
   export default {
     data () {
       return {
+        snack: false,
+        snackColor: '',
+        snackText: '',
+        max25chars: v => v.length <= 25 || 'Input too long!',
+        pagination: {},
         headers: [
           {
             text: 'Dessert (100g serving)',
@@ -23,6 +105,16 @@
           { text: 'Carbs (g)', value: 'carbs' },
           { text: 'Protein (g)', value: 'protein' },
           { text: 'Iron (%)', value: 'iron' },
+          { text: 'Calories2', value: 'calories2' },
+          { text: 'Fat (g)2', value: 'fat2' },
+          { text: 'Carbs (g)2', value: 'carbs2' },
+          { text: 'Protein (g)2', value: 'protein2' },
+          { text: 'Iron (%)2', value: 'iron2' },
+          { text: 'Calories3', value: 'calories3' },
+          { text: 'Fat (g)3', value: 'fat3' },
+          { text: 'Carbs (g)3', value: 'carbs3' },
+          { text: 'Protein (g)3', value: 'protein3' },
+          { text: 'Iron (%)3', value: 'iron3' },
         ],
         desserts: [
           {
@@ -32,6 +124,16 @@
             carbs: 24,
             protein: 4.0,
             iron: '1%',
+            calories2: 159,
+            fat2: 6.0,
+            carbs2: 24,
+            protein2: 4.0,
+            iron2: '1%',
+            calories3: 159,
+            fat3: 6.0,
+            carbs3: 24,
+            protein3: 4.0,
+            iron3: '1%',
           },
           {
             name: 'Ice cream sandwich',
@@ -40,6 +142,11 @@
             carbs: 37,
             protein: 4.3,
             iron: '1%',
+            calories2: 159,
+            fat2: 6.0,
+            carbs2: 24,
+            protein2: 4.0,
+            iron2: '1%',
           },
           {
             name: 'Eclair',
@@ -48,6 +155,11 @@
             carbs: 23,
             protein: 6.0,
             iron: '7%',
+            calories2: 159,
+            fat2: 6.0,
+            carbs2: 24,
+            protein2: 4.0,
+            iron2: '1%',
           },
           {
             name: 'Cupcake',
@@ -56,6 +168,11 @@
             carbs: 67,
             protein: 4.3,
             iron: '8%',
+            calories2: 159,
+            fat2: 6.0,
+            carbs2: 24,
+            protein2: 4.0,
+            iron2: '1%',
           },
           {
             name: 'Gingerbread',
@@ -64,6 +181,11 @@
             carbs: 49,
             protein: 3.9,
             iron: '16%',
+            calories2: 159,
+            fat2: 6.0,
+            carbs2: 24,
+            protein2: 4.0,
+            iron2: '1%',
           },
           {
             name: 'Jelly bean',
@@ -72,6 +194,11 @@
             carbs: 94,
             protein: 0.0,
             iron: '0%',
+            calories2: 159,
+            fat2: 6.0,
+            carbs2: 24,
+            protein2: 4.0,
+            iron2: '1%',
           },
           {
             name: 'Lollipop',
@@ -80,6 +207,11 @@
             carbs: 98,
             protein: 0,
             iron: '2%',
+            calories2: 159,
+            fat2: 6.0,
+            carbs2: 24,
+            protein2: 4.0,
+            iron2: '1%',
           },
           {
             name: 'Honeycomb',
@@ -88,6 +220,11 @@
             carbs: 87,
             protein: 6.5,
             iron: '45%',
+            calories2: 159,
+            fat2: 6.0,
+            carbs2: 24,
+            protein2: 4.0,
+            iron2: '1%',
           },
           {
             name: 'Donut',
@@ -96,6 +233,11 @@
             carbs: 51,
             protein: 4.9,
             iron: '22%',
+            calories2: 159,
+            fat2: 6.0,
+            carbs2: 24,
+            protein2: 4.0,
+            iron2: '1%',
           },
           {
             name: 'KitKat',
@@ -104,9 +246,57 @@
             carbs: 65,
             protein: 7,
             iron: '6%',
+            calories2: 159,
+            fat2: 6.0,
+            carbs2: 24,
+            protein2: 4.0,
+            iron2: '1%',
           },
         ],
       }
+    },
+    methods: {
+      save () {
+        this.snack = true
+        this.snackColor = 'success'
+        this.snackText = 'Data saved'
+      },
+      cancel () {
+        this.snack = true
+        this.snackColor = 'error'
+        this.snackText = 'Canceled'
+      },
+      open () {
+        this.snack = true
+        this.snackColor = 'info'
+        this.snackText = 'Dialog opened'
+      },
+      close () {
+        console.log('Dialog closed')
+      },
+      handleClick(row) {
+        // set active row and deselect others
+        this.desserts.map((item, index) => {
+            item.selected = item === row
+
+            this.$set(this.desserts, index, item)
+        })
+
+        // or just do something with your current clicked row item data
+        console.log('handleClick: ', row.name)
+      },
+      handleRightClick(row) {
+      // set active row and deselect others
+        this.desserts.map((item, index) => {
+            item.selected = item === row
+
+            this.$set(this.desserts, index, item)
+        })
+
+        // or just do something with your current clicked row item data
+        console.log('rightClick:', row.name)
+        
+      },
     },
   }
 </script>
