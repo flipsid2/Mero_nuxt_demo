@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="inner">
     <v-card
       class="overflow-auto"
       max-height="600"
@@ -300,3 +300,16 @@
     },
   }
 </script>
+
+
+<style lang="scss" scoped>
+.inner {
+  margin-top: 30px;
+  padding: 10px 0;
+  border-radius: 4px;
+  text-align: center;
+  &.no-result {
+    padding: 70px 0;
+  }
+}
+</style>

@@ -78,6 +78,7 @@ header {
   align-items: center;
   padding: 0 40px;
   position: relative;
+  // margin-left: 280px;
   .logo {
     margin-right: 40px;
   }

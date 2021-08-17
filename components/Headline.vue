@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h1>
-      <span>MERo API</span><br />
+      <span>MAERo API</span><br />
     </h1>
     <div
       v-if="access_token"

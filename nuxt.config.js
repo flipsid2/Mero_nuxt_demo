@@ -32,7 +32,9 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '~/plugins'
+    // '~/plugins',
+    { src: '~/plugins/loadImage.js' },
+    { src: '~/plugins/persistedState.js' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -95,6 +97,10 @@ export default {
     {  
       path: '/api/database', 
       handler: '~/server-middleware/database.js' 
+    },
+    {  
+      path: '/api/maero/login', 
+      handler: '~/server-middleware/sign.js' 
     },
     {  
       path: '/api/github', 

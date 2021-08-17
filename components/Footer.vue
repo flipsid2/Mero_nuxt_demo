@@ -29,6 +29,7 @@ footer {
   padding: 70px 0;
   text-align: center;
   opacity: .3;
+  // margin-left: 280px;
   .logo {
     display: block;
     margin-bottom: 4px;
