@@ -86,6 +86,16 @@
 
 <script>
   export default {
+    // props: {
+    //   headers: {
+    //     type: Object,
+    //     default: () => ({})
+    //   },
+    //   items: {
+    //     type: Object,
+    //     default: () => ({})
+    //   }s
+    // },
     data () {
       return {
         snack: false,

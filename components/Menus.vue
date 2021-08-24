@@ -1,10 +1,16 @@
+
+// permanent
 <template>
   <v-card
     height="100%"
     width="256"
     class="mx-auto"
   >
-    <v-navigation-drawer permanent>
+    <v-navigation-drawer 
+      app
+      floating
+      persistent
+    >
       <v-list-item
         @click="movePage('/');"
       >
@@ -44,24 +50,40 @@
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        items: [
-          { title: 'Dashboard', icon: 'mdi-view-dashboard', target: "/about" },
-          { title: 'Photos', icon: 'mdi-view-dashboard-variant', target: "/about" },
-          { title: 'Orders', icon: 'mdi-order-alphabetical-ascending', target: "/orders" },
-          { title: 'About', icon: 'mdi-moped-electric', target: "/about" },
-          { title: 'tagging', icon: 'mdi-tag-arrow-right', target: "/about" },
-          { title: 'Setup', icon: 'mdi-cog', target: "/about" },
-        ],
-        right: null,
+import { mapState } from "vuex";
+import _ from "lodash";
+
+export default {
+  data () {
+    return {
+      drawer: null,
+      responsive: false,
+      right: null,
+    }
+  },
+  computed: {
+    ...mapState('menus', [
+      'items'
+    ])
+  },
+  // computed: _.extend(
+  //   ...mapState(['menus', 'colors']),
+  // ),
+  mounted(){
+    this.onResponsiveInverted()
+    window.addEventListener('resize', this.onResponsiveInverted)
+  },
+  methods: {
+    movePage(target){
+      this.$router.push(target);
+    },
+    onResponsiveInverted () {
+      if (window.innerWidth < 1000) {
+        this.responsive = true
+      } else {
+        this.responsive = false
       }
     },
-    methods: {
-      movePage(target){
-        this.$router.push(target);
-      },
-    }
   }
+}
 </script>

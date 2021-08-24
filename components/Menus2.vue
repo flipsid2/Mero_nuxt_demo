@@ -84,21 +84,6 @@ export default {
     drawer: null,
     color: 'success',
     responsive: false,
-    navigations: [
-        {
-          name: 'Search',
-          href: '/'
-        },
-        {
-          name: 'Movie',
-          href: '/movie/tt4520988',
-          path: /^\/movie/
-        },
-        {
-          name: 'About',
-          href: '/about'
-        }
-      ]
   }),
   computed: _.extend(
     mapState(["menus", "colors"]),

@@ -1,22 +1,38 @@
 <template>
   <div>
     <Search />
-    <DataTable />
+    <!-- <OrderTable /> -->
+    <CRUDTable />
   </div>
 </template>
 
 <script>
-
+// import { mapState } from 'vuex'
 import Search from '~/components/Search'
-import DataTable from '~/components/DataTable'
+// import OrderTable from '~/components/OrderTable'
+import CRUDTable from '~/components/CRUDTable'
 
 export default {
   components: {
     Search,
-    DataTable
+    // OrderTable,
+    CRUDTable
   },
+  // computed: {
+  //   ...mapState('orders', [
+  //     'orderheaders',
+  //     'orderdesserts'
+  //   ])
+  // },
+  // v-on:desserts="updateValue($event.target.desserts)"
+  // methods: {
+  //   updateValue: function (value) {
+  //     console.log('updateValue : ', value)
+  //     // this.$emit('orderdesserts', value)
+  //   }
+  // },
   created() {
-    
+
   }
 }
 </script>

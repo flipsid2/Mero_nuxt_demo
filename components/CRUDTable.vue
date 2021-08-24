@@ -1,8 +1,10 @@
 <template>
   <v-app>
     <v-data-table
-      :headers="headers"
-      :items="desserts"
+      :headers=orderheaders
+      :items=orderdesserts
+      :loading="loading"
+      loading-text="Loading... Please wait"
       sort-by="calories"
       class="elevation-1"
     >
@@ -155,24 +157,28 @@
 
 
 <script>
+import { mapState, mapGetters } from 'vuex'
+
   export default {
     data: () => ({
       dialog: false,
       dialogDelete: false,
-      headers: [
-        {
-          text: 'Dessert (100g serving)',
-          align: 'start',
-          sortable: false,
-          value: 'name',
-        },
-        { text: 'Calories', value: 'calories' },
-        { text: 'Fat (g)', value: 'fat' },
-        { text: 'Carbs (g)', value: 'carbs' },
-        { text: 'Protein (g)', value: 'protein' },
-        { text: 'Actions', value: 'actions', sortable: false },
-      ],
-      desserts: [],
+      // headers: [
+      //   {
+      //     text: 'Dessert (100g serving)',
+      //     align: 'start',
+      //     sortable: false,
+      //     value: 'name',
+      //   },
+      //   { text: 'Calories', value: 'calories' },
+      //   { text: 'Fat (g)', value: 'fat' },
+      //   { text: 'Carbs (g)', value: 'carbs' },
+      //   { text: 'Protein (g)', value: 'protein' },
+      //   { text: 'Actions', value: 'actions', sortable: false },
+      // ],
+      // orderheaders: [],
+      // orderdesserts: [],
+      loading: true,
       editedIndex: -1,
       editedItem: {
         name: '',
@@ -194,6 +200,16 @@
       formTitle () {
         return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
       },
+      orderheaders: function() {
+        return this.$store.getters["crud/orderheaders"];
+      },
+      orderdesserts: function() {
+        this.loading = false
+        return this.$store.getters["crud/orderdesserts"];
+      },
+      // orderids: function() {
+      //   return this.$store.getters["crud/orderids"];
+      // }
     },
 
     watch: {
@@ -202,103 +218,33 @@
       },
       dialogDelete (val) {
         val || this.closeDelete()
-      },
+      }
     },
 
-    created () {
-      this.initialize()
-    },
+    // created () {
+    //   this.initialize()
+    // },
 
     methods: {
-      initialize () {
-        this.desserts = [
-          {
-            name: 'Frozen Yogurt',
-            calories: 159,
-            fat: 6.0,
-            carbs: 24,
-            protein: 4.0,
-          },
-          {
-            name: 'Ice cream sandwich',
-            calories: 237,
-            fat: 9.0,
-            carbs: 37,
-            protein: 4.3,
-          },
-          {
-            name: 'Eclair',
-            calories: 262,
-            fat: 16.0,
-            carbs: 23,
-            protein: 6.0,
-          },
-          {
-            name: 'Cupcake',
-            calories: 305,
-            fat: 3.7,
-            carbs: 67,
-            protein: 4.3,
-          },
-          {
-            name: 'Gingerbread',
-            calories: 356,
-            fat: 16.0,
-            carbs: 49,
-            protein: 3.9,
-          },
-          {
-            name: 'Jelly bean',
-            calories: 375,
-            fat: 0.0,
-            carbs: 94,
-            protein: 0.0,
-          },
-          {
-            name: 'Lollipop',
-            calories: 392,
-            fat: 0.2,
-            carbs: 98,
-            protein: 0,
-          },
-          {
-            name: 'Honeycomb',
-            calories: 408,
-            fat: 3.2,
-            carbs: 87,
-            protein: 6.5,
-          },
-          {
-            name: 'Donut',
-            calories: 452,
-            fat: 25.0,
-            carbs: 51,
-            protein: 4.9,
-          },
-          {
-            name: 'KitKat',
-            calories: 518,
-            fat: 26.0,
-            carbs: 65,
-            protein: 7,
-          },
-        ]
-      },
+      // initialize () {
+      //   this.headers  = this.$store.getters["crud/orderheaders"]
+      //   this.desserts = this.$store.getters["crud/orderdesserts"]
+      // },
 
       editItem (item) {
-        this.editedIndex = this.desserts.indexOf(item)
+        this.editedIndex = this.orderdesserts.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
       },
 
       deleteItem (item) {
-        this.editedIndex = this.desserts.indexOf(item)
+        this.editedIndex = this.orderdesserts.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialogDelete = true
       },
 
       deleteItemConfirm () {
-        this.desserts.splice(this.editedIndex, 1)
+        this.orderdesserts.splice(this.editedIndex, 1)
         this.closeDelete()
       },
 
@@ -320,12 +266,27 @@
 
       save () {
         if (this.editedIndex > -1) {
-          Object.assign(this.desserts[this.editedIndex], this.editedItem)
+          // Object.assign(this.desserts[this.editedIndex], this.editedItem)
+          console.log("save : ", this.orderdesserts[this.editedIndex], this.editedItem)
+          this.$store.dispatch('crud/updateItem', {
+            row: this.editedIndex,
+            item: this.editedItem
+          })
+          console.log("getters 0: ", this.orderdesserts[this.editedIndex])
+          console.log("getters 1: ", this.$store.getters["crud/orderdesserts"][this.editedIndex])
+          // this.refreshAll()
         } else {
-          this.desserts.push(this.editedItem)
+          // this.orderdesserts.push(this.editedItem)
+          this.$store.dispatch('crud/addItem', {
+            item: this.editedItem
+          })
         }
         this.close()
       },
+
+      // refreshAll () {
+      //   this.$router.go()
+      // }
     },
   }
 </script>
