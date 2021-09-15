@@ -12,7 +12,7 @@
         <v-toolbar
           flat
         >
-          <v-toolbar-title>Orders</v-toolbar-title>
+          <v-toolbar-title>User Administration</v-toolbar-title>
           <v-divider
             class="mx-4"
             inset
@@ -31,7 +31,7 @@
                 v-bind="attrs"
                 v-on="on"
               >
-                Add Order
+                Add User
               </v-btn>
             </template>
             <v-card>
@@ -174,11 +174,11 @@ import { mapState, mapGetters } from 'vuex'
         return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
       },
       headers: function() {
-        return this.$store.getters["orders/header"];
+        return this.$store.getters["users/header"];
       },
       desserts: function() {
         this.loading = false
-        return this.$store.getters["orders/orders"];
+        return this.$store.getters["users/users"];
       },
     },
 
@@ -197,23 +197,23 @@ import { mapState, mapGetters } from 'vuex'
 
     methods: {
       initialize () {
-        this.$store.dispatch('orders/getOrders')
+        this.$store.dispatch('users/getAllUser')
       },
 
       editItem (item) {
-        this.editedIndex = this.desserts.indexOf(item)
+        this.editedIndex = this.orderdesserts.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
       },
 
       deleteItem (item) {
-        this.editedIndex = this.desserts.indexOf(item)
+        this.editedIndex = this.orderdesserts.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialogDelete = true
       },
 
       deleteItemConfirm () {
-        this.$store.dispatch('orders/setDelOrder', {
+        this.$store.dispatch('users/setDelUser', {
           row: this.editedIndex,
           item: this.editedItem
         })
@@ -238,12 +238,12 @@ import { mapState, mapGetters } from 'vuex'
 
       save () {
         if (this.editedIndex > -1) {
-          this.$store.dispatch('orders/setUpdateOrder', {
+          this.$store.dispatch('users/setUpdateUser', {
             row: this.editedIndex,
             item: this.editedItem
           })
         } else {
-          this.$store.dispatch('orders/setAddOrder', {
+          this.$store.dispatch('users/setAddUser', {
             item: this.editedItem
           })
         }

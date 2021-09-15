@@ -1,22 +1,22 @@
 <template>
   <div>
     <!-- <Search /> -->
-    <OrderTable />
-    <!-- <CRUDTable /> -->
+    <!-- <OrderTable /> -->
+    <CRUDTable />
   </div>
 </template>
 
 <script>
 // import { mapState } from 'vuex'
 // import Search from '~/components/Search'
-import OrderTable from '~/components/OrderTable'
-// import CRUDTable from '~/components/CRUDTable'
+// import OrderTable from '~/components/OrderTable'
+import CRUDTable from '~/components/UserAdminTable'
 
 export default {
   components: {
     // Search,
-    OrderTable
-    // CRUDTable
+    // OrderTable,
+    CRUDTable
   },
   // computed: {
   //   ...mapState('orders', [

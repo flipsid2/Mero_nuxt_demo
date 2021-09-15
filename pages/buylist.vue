@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- <Search /> -->
-    <OrderTable />
+    <BuyListTable />
     <!-- <CRUDTable /> -->
   </div>
 </template>
@@ -9,13 +9,13 @@
 <script>
 // import { mapState } from 'vuex'
 // import Search from '~/components/Search'
-import OrderTable from '~/components/OrderTable'
+import BuyListTable from '~/components/BuyListTable'
 // import CRUDTable from '~/components/CRUDTable'
 
 export default {
   components: {
     // Search,
-    OrderTable
+    BuyListTable
     // CRUDTable
   },
   // computed: {

@@ -49,7 +49,7 @@ export default {
       const payload = this.form;
       const {User, Password} = payload;
       console.log(`loginSubmit : ${User}, ${Password}`)
-      axios.post('/api/maero/login/R', payload)
+      axios.post('/api/maero/login/C', payload)
       .then((res) => {
         if (res.status === 200) {
           // 로그인 성공시

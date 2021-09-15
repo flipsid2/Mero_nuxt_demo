@@ -12,7 +12,7 @@
         <v-toolbar
           flat
         >
-          <v-toolbar-title>Orders</v-toolbar-title>
+          <v-toolbar-title>매입목록</v-toolbar-title>
           <v-divider
             class="mx-4"
             inset
@@ -23,7 +23,7 @@
             v-model="dialog"
             max-width="500px"
           >
-            <template v-slot:activator="{ on, attrs }">
+            <!-- <template v-slot:activator="{ on, attrs }">
               <v-btn
                 color="primary"
                 dark
@@ -33,7 +33,7 @@
               >
                 Add Order
               </v-btn>
-            </template>
+            </template> -->
             <v-card>
               <v-card-title>
                 <span class="text-h5">{{ formTitle }}</span>
@@ -174,11 +174,11 @@ import { mapState, mapGetters } from 'vuex'
         return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
       },
       headers: function() {
-        return this.$store.getters["orders/header"];
+        return this.$store.getters["buylist/header"];
       },
       desserts: function() {
         this.loading = false
-        return this.$store.getters["orders/orders"];
+        return this.$store.getters["buylist/buylist"];
       },
     },
 
@@ -197,7 +197,7 @@ import { mapState, mapGetters } from 'vuex'
 
     methods: {
       initialize () {
-        this.$store.dispatch('orders/getOrders')
+        this.$store.dispatch('buylist/getBuylist')
       },
 
       editItem (item) {
@@ -213,7 +213,7 @@ import { mapState, mapGetters } from 'vuex'
       },
 
       deleteItemConfirm () {
-        this.$store.dispatch('orders/setDelOrder', {
+        this.$store.dispatch('buylist/setDelBuylist', {
           row: this.editedIndex,
           item: this.editedItem
         })
@@ -238,12 +238,12 @@ import { mapState, mapGetters } from 'vuex'
 
       save () {
         if (this.editedIndex > -1) {
-          this.$store.dispatch('orders/setUpdateOrder', {
+          this.$store.dispatch('buylist/setUpdateBuylist', {
             row: this.editedIndex,
             item: this.editedItem
           })
         } else {
-          this.$store.dispatch('orders/setAddOrder', {
+          this.$store.dispatch('buylist/setAddBuylist', {
             item: this.editedItem
           })
         }

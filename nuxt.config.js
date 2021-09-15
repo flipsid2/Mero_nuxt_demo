@@ -103,6 +103,14 @@ export default {
       handler: '~/server-middleware/sign.js' 
     },
     {  
+      path: '/api/maero/orders', 
+      handler: '~/server-middleware/orders.js' 
+    },
+    {  
+      path: '/api/maero/buylist', 
+      handler: '~/server-middleware/buylist.js' 
+    },
+    {  
       path: '/api/github', 
       handler: '~/server-middleware/github.js' 
     },    

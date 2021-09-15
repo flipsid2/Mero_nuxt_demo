@@ -3,7 +3,7 @@ export default {
   state: () => ({
     orderheaders: [
       {
-        text: 'Dessert (100g serving)',
+        text: 'ABCDE (100g serving)',
         align: 'start',
         sortable: false,
         value: 'name',
@@ -12,7 +12,17 @@ export default {
       { text: 'Fat (g)', value: 'fat' },
       { text: 'Carbs (g)', value: 'carbs' },
       { text: 'Protein (g)', value: 'protein' },
-      { text: 'Actions', value: 'actions', sortable: false },
+      { text: 'Iron (%)', value: 'iron' },
+      { text: 'Calories2', value: 'calories2' },
+      { text: 'Fat (g)2', value: 'fat2' },
+      { text: 'Carbs (g)2', value: 'carbs2' },
+      { text: 'Protein (g)2', value: 'protein2' },
+      { text: 'Iron (%)2', value: 'iron2' },
+      { text: 'Calories3', value: 'calories3' },
+      { text: 'Fat (g)3', value: 'fat3' },
+      { text: 'Carbs (g)3', value: 'carbs3' },
+      { text: 'Protein (g)3', value: 'protein3' },
+      { text: 'Iron (%)3', value: 'iron3' },
     ],
     orderdesserts: [
       {
@@ -21,6 +31,17 @@ export default {
         fat: 6.0,
         carbs: 24,
         protein: 4.0,
+        iron: '1%',
+        calories2: 159,
+        fat2: 6.0,
+        carbs2: 24,
+        protein2: 4.0,
+        iron2: '1%',
+        calories3: 159,
+        fat3: 6.0,
+        carbs3: 24,
+        protein3: 4.0,
+        iron3: '1%',
       },
       {
         name: 'Ice cream sandwich',
@@ -28,6 +49,12 @@ export default {
         fat: 9.0,
         carbs: 37,
         protein: 4.3,
+        iron: '1%',
+        calories2: 159,
+        fat2: 6.0,
+        carbs2: 24,
+        protein2: 4.0,
+        iron2: '1%',
       },
       {
         name: 'Eclair',
@@ -35,6 +62,12 @@ export default {
         fat: 16.0,
         carbs: 23,
         protein: 6.0,
+        iron: '7%',
+        calories2: 159,
+        fat2: 6.0,
+        carbs2: 24,
+        protein2: 4.0,
+        iron2: '1%',
       },
       {
         name: 'Cupcake',
@@ -42,6 +75,12 @@ export default {
         fat: 3.7,
         carbs: 67,
         protein: 4.3,
+        iron: '8%',
+        calories2: 159,
+        fat2: 6.0,
+        carbs2: 24,
+        protein2: 4.0,
+        iron2: '1%',
       },
       {
         name: 'Gingerbread',
@@ -49,6 +88,12 @@ export default {
         fat: 16.0,
         carbs: 49,
         protein: 3.9,
+        iron: '16%',
+        calories2: 159,
+        fat2: 6.0,
+        carbs2: 24,
+        protein2: 4.0,
+        iron2: '1%',
       },
       {
         name: 'Jelly bean',
@@ -56,6 +101,12 @@ export default {
         fat: 0.0,
         carbs: 94,
         protein: 0.0,
+        iron: '0%',
+        calories2: 159,
+        fat2: 6.0,
+        carbs2: 24,
+        protein2: 4.0,
+        iron2: '1%',
       },
       {
         name: 'Lollipop',
@@ -63,6 +114,12 @@ export default {
         fat: 0.2,
         carbs: 98,
         protein: 0,
+        iron: '2%',
+        calories2: 159,
+        fat2: 6.0,
+        carbs2: 24,
+        protein2: 4.0,
+        iron2: '1%',
       },
       {
         name: 'Honeycomb',
@@ -70,6 +127,12 @@ export default {
         fat: 3.2,
         carbs: 87,
         protein: 6.5,
+        iron: '45%',
+        calories2: 159,
+        fat2: 6.0,
+        carbs2: 24,
+        protein2: 4.0,
+        iron2: '1%',
       },
       {
         name: 'Donut',
@@ -77,6 +140,12 @@ export default {
         fat: 25.0,
         carbs: 51,
         protein: 4.9,
+        iron: '22%',
+        calories2: 159,
+        fat2: 6.0,
+        carbs2: 24,
+        protein2: 4.0,
+        iron2: '1%',
       },
       {
         name: 'KitKat',
@@ -84,55 +153,23 @@ export default {
         fat: 26.0,
         carbs: 65,
         protein: 7,
+        iron: '6%',
+        calories2: 159,
+        fat2: 6.0,
+        carbs2: 24,
+        protein2: 4.0,
+        iron2: '1%',
       },
     ],
   }),
-  getters: {
-    orderheaders (state) { return state.orderheaders },
-    orderdesserts(state) { return state.orderdesserts },
-    // orderids(state) { 
-    //   var ids = [];
-    //   for (var i = 0;i < state.orderdesserts.length; i++) {
-    //     ids.push({id: state.orderdesserts[i].id})
-    //   }
-    //   return ids 
-    // }
-  },
   mutations: {
     updateState(state, payload) {
       Object.keys(payload).forEach(key => {
         state[key] = payload[key]
       })
     },
-    updateDessert(state, payload) {
-      const {row, item } = payload
-      // console.log('dessert : ', state.orderdesserts, row, item)
-      // console.log('dessert : ', state.orderdesserts[row], item)
-      state.orderdesserts[row] = item
-      
-      // force fkdlsreload event 
-      state.orderdesserts.push(item)
-      state.orderdesserts.pop(item)
-    },
-    addDessert(state, payload) {
-      const {item } = payload
-      state.orderdesserts.push(item)
-    }
   },
   actions: {
-    updateItem({ state, commit }, payload) {
-      const {row, item } = payload
-      commit('updateDessert', {
-        row: row,
-        item: item
-      })
-    },
-    addItem({ state, commit }, payload) {
-      const { item } = payload
-      commit('addDessert', {
-        item: item
-      })
-    },
     updateDessert({ state, commit }, payload) {
       console.log('updateDessert: ', payload)
       // for (var i = 0;i < orderdesserts.length; i++) {

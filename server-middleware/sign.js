@@ -1,4 +1,5 @@
 const express = require('express');
+const { isNull } = require('lodash');
 const app     = express()
 const mysql   = require('mysql');
 
@@ -17,20 +18,26 @@ app.post('/:type', (req, res, next) => {
   // console.log('Request URL:', req.originalUrl);
   const payload = req.body;
   const { User, Password, Host, Priv, Phone } = payload;
-  // console.log(`login !!! ${User}, ${Password}, ${Host}, ${Priv}, ${Phone}`)
+  const tmpHost = Host ? Host : 'localhost'
+  const tmpPriv = Priv ? Priv : '1'
+  const tmpPhone = Phone ? Phone : ''
+  // console.log(`login !!! ${User}, ${Password}, ${tmpHost}, ${tmpPriv}, ${Phone}`)
 
   console.log(req.params.type)
   var ret=[];
   let setQuery = '' 
-  if (req.params.type === 'C' || req.params.type === 'U' ) {
-    // Create
-    setQuery = `INSERT INTO login (User, Password, Host, Priv, Phone) VALUES ('${User}', '${Password}', '${Host}', ${Priv}, '${Phone}') ON DUPLICATE KEY UPDATE Password = ${Password}, Host = ${Host}, Priv = ${Priv}, Phone = ${Phone}`;
+  if (req.params.type === 'C' ) {
+    // Check
+    setQuery = `SELECT count(*) AS isPass FROM login WHERE User = '${User}' AND Password = '${Password}';`;
+  } else if (req.params.type === 'U' ) {
+    // Update
+    setQuery = `REPLACE INTO login (User, Password, Host, Priv, Phone) VALUES ('${User}', '${Password}', '${tmpHost}', ${tmpPriv}, '${tmpPhone}');`;
   } else if (req.params.type === 'R' ) {
     // Read
-    setQuery = `SELECT count(*) AS isPass FROM login WHERE User = '${User}' AND Password = '${Password}'`;
+    setQuery = `SELECT * FROM login;`;
   } else if (req.params.type === 'D' ) {
     // Delete
-    setQuery = `DELETE FROM login WHERE User = '${User}'`;
+    setQuery = `DELETE FROM login WHERE User = '${User}';`;
   } else {
     res.status(404).send('error');
   };
@@ -44,12 +51,29 @@ app.post('/:type', (req, res, next) => {
           console.log(error);
           res.status(500).send('fail ')
         }
-        var dat = [];
-        console.log(row[0].isPass)
-        // for (var i = 0;i < row.length; i++) {
-        //   dat.push({name: row[i].name, amount: row[i].amount, price: row[i].price})
-        // }
-        ret = JSON.stringify({result: row[0].isPass});
+        
+        if (req.params.type === 'C' ) {
+          console.log(row[0].isPass)
+          ret = JSON.stringify({result: row[0].isPass});
+        } else if (req.params.type === 'R' ) {
+          var dat = [];
+          for (var i = 0;i < row.length; i++) {
+            dat.push({User: row[i].User, Password: row[i].Password, Level: row[i].Priv, Phone: row[i].Phone})
+          }
+          var header = [
+            {
+              text: 'User',
+              align: 'start',
+              sortable: false,
+              value: 'User',
+            },
+            { text: 'Password', value: 'Password' },
+            { text: 'Level', value: 'Level' },
+            { text: 'Phone', value: 'Phone' },
+            { text: 'Actions', value: 'actions', sortable: false },
+          ]
+          ret = JSON.stringify({Header: header, Search: dat});
+        }
         res.header('Content-Type', 'application/json; charset=utf-8')
         res.status(200).send(ret)
       });
