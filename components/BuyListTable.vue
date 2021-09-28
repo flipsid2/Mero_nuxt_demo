@@ -3,16 +3,39 @@
     <v-data-table
       :headers=headers
       :items=desserts
+      :footer-props="{'items-per-page-options':[-1]}"
+      hide-default-footer
       :loading="loading"
       loading-text="Loading... Please wait"
-      sort-by="calories"
+      sort-by='b_date'
       class="elevation-1"
+      @click:row="handleClick"
     >
+      <!-- <template v-slot:item.b_date="props">
+        <v-edit-dialog
+          large 
+          persistent 
+          @save="saveData(props.item, 'b_date')"
+          @open="editData = props.item.b_date"
+        >
+          {{ props.item.b_date }}
+          <template v-slot:input>
+            <v-text-field
+              v-model="editData"
+              :rules="[max10chars]"
+              label="Edit"
+              single-line
+              counter
+            ></v-text-field>
+          </template>
+        </v-edit-dialog>
+      </template> -->
+
       <template v-slot:top>
         <v-toolbar
           flat
         >
-          <v-toolbar-title>매입목록</v-toolbar-title>
+          <v-toolbar-title>매입정보</v-toolbar-title>
           <v-divider
             class="mx-4"
             inset
@@ -21,65 +44,60 @@
           <v-spacer></v-spacer>
           <v-dialog
             v-model="dialog"
-            max-width="500px"
+            max-width="600px"
           >
-            <!-- <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                color="primary"
-                dark
-                class="mb-2"
-                v-bind="attrs"
-                v-on="on"
-              >
-                Add Order
-              </v-btn>
-            </template> -->
             <v-card>
               <v-card-title>
-                <span class="text-h5">{{ formTitle }}</span>
+                <span class="text-h5">{{editedItem.o_product_name}}</span>
               </v-card-title>
-
+              <v-card-subtitle>
+                <v-container>
+                  <v-row>
+                    <v-col cols="12" sm="6" md="4">
+                      <span class="text-h15">주문ID : {{editedItem.b_order_id}}</span>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <span class="text-h15">상품ID : {{editedItem.o_product_id}}</span>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card-subtitle>
               <v-card-text>
                 <v-container>
                   <v-row>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="4"
-                    >
+                    <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                        v-model="editedItem.User"
-                        label="User"
+                        v-model="editedItem.b_enquiry" label="連絡事項"                        
                       ></v-text-field>
                     </v-col>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="4"
-                    >
+                    <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                        v-model="editedItem.Password"
-                        label="Password"
+                        v-model="editedItem.b_supplier" label="매입처"
                       ></v-text-field>
                     </v-col>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="4"
-                    >
+                    <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                        v-model="editedItem.Level"
-                        label="Level"
+                        v-model="editedItem.b_sup_price_won" label="매입가"
                       ></v-text-field>
                     </v-col>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="4"
-                    >
+                    <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                        v-model="editedItem.Phone"
-                        label="Phone"
+                        v-model="editedItem.b_remarks" label="특이사항"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="editedItem.b_waybill" label="주문번호"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="editedItem.b_waybill_date" label="매입일"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="editedItem.b_memo" label="memo"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -105,34 +123,9 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <v-dialog v-model="dialogDelete" max-width="500px">
-            <v-card>
-              <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-                <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
-                <v-spacer></v-spacer>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
         </v-toolbar>
       </template>
-      <template v-slot:item.actions="{ item }">
-        <v-icon
-          small
-          class="mr-2"
-          @click="editItem(item)"
-        >
-          mdi-pencil
-        </v-icon>
-        <v-icon
-          small
-          @click="deleteItem(item)"
-        >
-          mdi-delete
-        </v-icon>
-      </template>
+
       <template v-slot:no-data>
         <v-btn
           color="primary"
@@ -152,27 +145,78 @@ import { mapState, mapGetters } from 'vuex'
   export default {
     data: () => ({
       dialog: false,
-      dialogDelete: false,
       loading: true,
       editedIndex: -1,
       editedItem: {
-        User: '',
-        Password: '',
-        Level: 1,
-        Phone: '010',
+        o_product_id:   0, 
+        o_product_name: '', 
+        o_price:        0, 
+        o_amount:       0,
+        o_order_id:     0,  
+        o_name:         '', 
+        o_recv_name:    '', 
+        o_recv_zip_code:'', 
+        o_recv_addr:    '',
+        o_recv_phone:   '', 
+        o_delivery_type:'', 
+        o_color_size:   '', 
+        o_message:      '', 
+        o_en_name:      '', 
+        o_en_addr:      '', 
+        o_order_memo:   '', 
+        o_status:       '',
+        p_brand:        '',
+        b_order_id:     0, 
+        b_date:         '', 
+        b_enquiry:      '', 
+        b_supplier:     '', 
+        b_sup_price_won:0, 
+        b_remarks:      '', 
+        b_waybill:      '',
+        b_waybill_date: '', 
+        b_memo:         ''
       },
       defaultItem: {
-        User: '',
-        Password: '',
-        Level: 1,
-        Phone: '010',
+        o_product_id:   0, 
+        o_product_name: '', 
+        o_price:        0, 
+        o_amount:       0,
+        o_order_id:     0,  
+        o_name:         '', 
+        o_recv_name:    '', 
+        o_recv_zip_code:'', 
+        o_recv_addr:    '',
+        o_recv_phone:   '', 
+        o_delivery_type:'', 
+        o_color_size:   '', 
+        o_message:      '', 
+        o_en_name:      '', 
+        o_en_addr:      '', 
+        o_order_memo:   '', 
+        o_status:       '',
+        p_brand:        '',
+        b_order_id:     0, 
+        b_date:         '', 
+        b_enquiry:      '', 
+        b_supplier:     '', 
+        b_sup_price_won:0, 
+        b_remarks:      '', 
+        b_waybill:      '',
+        b_waybill_date: '', 
+        b_memo:         ''
       },
+
+      editData: '',
+      snack: false,
+      snackColor: '',
+      snackText: '',
+      max10chars: v => v.length <= 10 || 'Input too long!',
+      max20chars: v => v.length <= 20 || 'Input too long!',
+      max50chars: v => v.length <= 50 || 'Input too long!',
+      max100chars: v => v.length <= 100 || 'Input too long!',
     }),
 
     computed: {
-      formTitle () {
-        return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
-      },
       headers: function() {
         return this.$store.getters["buylist/header"];
       },
@@ -186,9 +230,6 @@ import { mapState, mapGetters } from 'vuex'
       dialog (val) {
         val || this.close()
       },
-      dialogDelete (val) {
-        val || this.closeDelete()
-      }
     },
 
     created () {
@@ -199,27 +240,33 @@ import { mapState, mapGetters } from 'vuex'
       initialize () {
         this.$store.dispatch('buylist/getBuylist')
       },
+    
+      save () {
+        if (this.editedIndex > -1) {
+          console.log('editedItem(', this.editedIndex, ') : ', this.editedItem)
 
-      editItem (item) {
-        this.editedIndex = this.desserts.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
+          this.$store.dispatch('buylist/setUpdateBuylist', {
+            row: this.editedIndex,
+            item: this.editedItem
+          })
+        }
+
+        this.snack = true
+        this.snackColor = 'success'
+        this.snackText = 'Data saved'
+        this.close()
       },
-
-      deleteItem (item) {
-        this.editedIndex = this.desserts.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialogDelete = true
+      cancel () {
+        this.snack = true
+        this.snackColor = 'error'
+        this.snackText = 'Canceled'
+        this.close()
       },
-
-      deleteItemConfirm () {
-        this.$store.dispatch('buylist/setDelBuylist', {
-          row: this.editedIndex,
-          item: this.editedItem
-        })
-        this.closeDelete()
+      open () {
+        this.snack = true
+        this.snackColor = 'info'
+        this.snackText = 'Dialog opened'
       },
-
       close () {
         this.dialog = false
         this.$nextTick(() => {
@@ -228,26 +275,19 @@ import { mapState, mapGetters } from 'vuex'
         })
       },
 
-      closeDelete () {
-        this.dialogDelete = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
+      handleClick(row) {
+        // set active row and deselect others
+        // this.desserts.map((item, index) => {
+        //     item.selected = item === row
 
-      save () {
-        if (this.editedIndex > -1) {
-          this.$store.dispatch('buylist/setUpdateBuylist', {
-            row: this.editedIndex,
-            item: this.editedItem
-          })
-        } else {
-          this.$store.dispatch('buylist/setAddBuylist', {
-            item: this.editedItem
-          })
-        }
-        this.close()
+        //     this.$set(this.desserts, index, item)
+        // })
+
+        // or just do something with your current clicked row item data
+        // console.log('handleClick: ', row.o_product_name)
+        this.editedIndex = this.desserts.indexOf(row)
+        this.editedItem = Object.assign({}, row)
+        this.dialog = true
       },
     },
   }

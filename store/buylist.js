@@ -19,6 +19,7 @@ export default {
     },
     updateBuylist(state, payload) {
       const {row, item } = payload
+      // console.log("row : ", row, " item : ", item)
       state.buylist[row] = item
       
       state.buylist.push(item)
@@ -43,7 +44,7 @@ export default {
         const { Header, Search } = res.data
 
         commit('updateState', {
-          buylist: _uniqBy(Search, 'order_id'),
+          buylist: _uniqBy(Search, 'o_order_id'),
           header: Header
         })
 
