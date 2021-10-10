@@ -3,7 +3,6 @@
     <v-card-title>
       주문목록
       <v-spacer></v-spacer>
-      <wj-barcode-qr-code :value="theValue"></wj-barcode-qr-code>
       <v-text-field
         v-model="search"
         append-icon="mdi-magnify"
@@ -189,7 +188,6 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex'
-import '@grapecity/wijmo.vue2.barcode.common'
 
   export default {
     components: {
@@ -214,7 +212,6 @@ import '@grapecity/wijmo.vue2.barcode.common'
       },
       search: '',
       files: [],
-      theValue: 'https://en.wikipedia.org/wiki/QR_code'
     }),
 
     computed: {

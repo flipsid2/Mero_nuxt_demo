@@ -1,8 +1,8 @@
 <template>
-  <div class="container">
+  <v-container style="max-width: 800px; position: relative;">
     <template v-if="loading">
       <div class="skeletons">
-        <div class="skeleton poster"></div>
+        <!-- <div class="skeleton poster"></div> -->
         <div class="specs">
           <div class="skeleton title"></div>
           <div class="skeleton spec"></div>
@@ -17,47 +17,103 @@
         :z-index="9"
         fixed />
     </template>
-    <div
-      v-else
+    <template v-else
       class="movie-details">
-      <div class="poster">
-        
-      </div>
+      <!-- <div class="poster"></div> -->
       <div class="specs">
-        <wj-barcode-qr-code :value="buyitem.b_qrcode"></wj-barcode-qr-code> 
-        <div class="title">
-          
-          {{ buyitem.o_product_name }}
-        </div>
-        <div class="브랜드">
-          <span>{{ buyitem.p_brand }}</span>
-        </div>
-        <div class="주소">
-          {{ buyitem.o_recv_addr }}
-        </div>
-        <div>
-          <h3>주문번호</h3>
-          {{ buyitem.b_waybill }}
-        </div>
-        <div>
-          <h3>상태</h3>
-          {{ buyitem.o_status }}
-        </div>
+        <v-row justify="space-between">
+          <v-col cols="12" sm="6" md="4">
+            <span class="text-h15">{{buyitem.b_date}}</span>
+          </v-col>
+          <v-col cols="12" sm="6" md="4">
+            <span class="text-h15">임의번호</span>
+          </v-col>
+          <v-col cols="12" sm="6" md="4">
+            <span class="text-h15">{{buyitem.b_order_id}}</span>
+          </v-col>
+        </v-row>
+        <v-row justify="space-between">
+          <v-col cols="12" sm="6" md="4">
+            <span class="text-h15">{{buyitem.o_name}}</span>
+          </v-col>
+          <v-col cols="12" sm="6" md="4">
+            <span class="text-h15">알림</span>
+          </v-col>
+        </v-row>
+        <v-divider></v-divider>
+        <v-row justify="space-between">
+          <v-col cols="12" sm="6" md="4">
+            <span class="text-h15">{{buyitem.o_product_name}}</span>
+          </v-col>
+          <v-col cols="12" sm="6" md="4">
+            <span class="text-h15">{{buyitem.p_brand}}</span>
+          </v-col>
+        </v-row>
+        <v-row justify="space-between">
+          <v-col cols="12" sm="6" md="4">
+            <span class="text-h15">{{buyitem.o_color_size}}</span>
+          </v-col>
+          <v-col cols="12" sm="6" md="4">
+            <span class="text-h15">{{buyitem.o_amount}}</span>
+          </v-col>
+        </v-row>
+        <v-row justify="center">
+          <v-col cols="auto">
+            <QRCanvas :options="options" />
+          </v-col>
+        </v-row>
+        <v-divider></v-divider>
+        <v-row justify="space-between">
+          <v-col cols="12" sm="6" md="4">
+            <span class="text-h15">{{buyitem.o_recv_name}}</span>
+          </v-col>
+          <v-col cols="12" sm="6" md="4">
+            <span class="text-h15">{{buyitem.o_recv_phone}}</span>
+          </v-col>
+          <v-col cols="12" sm="6" md="4">
+            <span class="text-h15">{{buyitem.o_recv_zip_code}}</span>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12" sm="6" md="4">
+            <span class="text-h15">{{buyitem.o_recv_addr}}</span>
+          </v-col>
+        </v-row>
+        <v-row justify="space-between">
+          <v-col cols="12" sm="6" md="4">
+            <span class="text-h15">{{buyitem.b_memo}}</span>
+          </v-col>
+          <v-col cols="12" sm="6" md="4">
+            <span class="text-h15">{{buyitem.b_remarks}}</span>
+          </v-col>
+          <v-col cols="12" sm="6" md="4">
+            <span class="text-h15">{{buyitem.o_delivery_type}}</span>
+          </v-col>
+        </v-row>
       </div>
-    </div>
-  </div>
+    </template>
+  </v-container>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex'
 import Loader from '~/components/Loader'
-import '@grapecity/wijmo.vue2.barcode.common'
+import { QRCanvas } from 'qrcanvas-vue';
 
 //_id : 23041056
 
 export default {
   components: {
-    Loader
+    Loader,
+    QRCanvas
+  },
+  data() {
+    return {
+      options: {
+        cellSize: 4,
+        data: 'https://mero-nuxt-demo.herokuapp.com/buyitem/23007462',
+      },
+    };
   },
   async asyncData({ store, params }) {
     await store.dispatch('buylist/getBuylistWithId', {
@@ -134,9 +190,9 @@ export default {
   }
   .specs {
     flex-grow: 1;
-    .wj-barcode-qrcode {
-        width: 200px;
-        height: 200px;
+    .qr-canvas {
+      width: 200px;
+      height: 200px;
     }
     .title {
       color: $black;
@@ -197,7 +253,7 @@ export default {
   }
   @include media-breakpoint-down(md) {
     .specs {
-      .wj-barcode-qrcode {
+      .qr-canvas {
           width: 100px;
           height: 100px;
       }
