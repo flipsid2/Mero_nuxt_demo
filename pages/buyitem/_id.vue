@@ -20,8 +20,13 @@
     <div
       v-else
       class="movie-details">
+      <div class="poster">
+        
+      </div>
       <div class="specs">
+        <wj-barcode-qr-code :value="buyitem.b_qrcode"></wj-barcode-qr-code> 
         <div class="title">
+          
           {{ buyitem.o_product_name }}
         </div>
         <div class="브랜드">
@@ -69,20 +74,7 @@ export default {
     ])
   },
   methods: {
-    // requestDiffSizeImage(url, size = 700) {
-    //   // 잘못된 URL(Poster)인 경우.
-    //   if (!url || url === 'N/A') {
-    //     this.imageLoading = false
-    //     return ''
-    //   }
-    //   const src = url.replace('SX300', `SX${size}`)
-    //   // 정상적인 URL인 경우.
-    //   this.$loadImage(src)
-    //     .then(() => {
-    //       this.imageLoading = false
-    //     })
-    //   return src
-    // }
+
   }
 }
 </script>
@@ -142,6 +134,10 @@ export default {
   }
   .specs {
     flex-grow: 1;
+    .wj-barcode-qrcode {
+        width: 200px;
+        height: 200px;
+    }
     .title {
       color: $black;
       font-family: "Oswald", sans-serif;
@@ -201,6 +197,10 @@ export default {
   }
   @include media-breakpoint-down(md) {
     .specs {
+      .wj-barcode-qrcode {
+          width: 100px;
+          height: 100px;
+      }
       .title {
         font-size: 50px;
       }

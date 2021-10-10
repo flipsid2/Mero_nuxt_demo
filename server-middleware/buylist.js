@@ -134,7 +134,7 @@ app.post('/:type', (req, res, next) => {
               o_product_name: row[i].product_name, 
               o_price:        row[i].price, 
               o_amount:       row[i].amount,
-              o_order_id:     row[i].order_id,  
+              o_order_id:     row[i].order_id, 
               o_name:         row[i].name, 
               o_recv_name:    row[i].recv_name, 
               o_recv_zip_code:row[i].recv_zip_code, 
@@ -157,6 +157,7 @@ app.post('/:type', (req, res, next) => {
               b_waybill:      row[i].waybill,
               b_waybill_date: row[i].waybill_date, 
               b_memo:         row[i].memo, 
+              b_qrcode:       process.env.CLIENT_URL+'/buyitem/'+row[i].order_id, 
             })
           }
           var header = [
