@@ -107,20 +107,16 @@ export default {
     Loader,
     QRCanvas
   },
-  data() {
-    return {
-      options: {
-        cellSize: 4,
-        data: 'https://mero-nuxt-demo.herokuapp.com/buyitem/23007462',
-      },
-    };
-  },
   async asyncData({ store, params }) {
     await store.dispatch('buylist/getBuylistWithId', {
       b_order_id: params.id
     })
     return {
-      imageLoading: true
+      imageLoading: true,
+      options: {
+        cellSize: 4,
+        data: `https://mero-nuxt-demo.herokuapp.com/buyitem/${params.id}`,
+      }
     }
   },
   computed: {

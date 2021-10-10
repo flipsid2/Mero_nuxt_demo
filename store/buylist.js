@@ -179,8 +179,8 @@ async function _getBuylist(payload) {
 async function _getBuylistWithId(payload) {
   const url = process.client
     ? '/api/maero/buylist/I'
-    // : `${process.env.CLIENT_URL}/api/maero/buylist/I`;
-    : `http://localhost:3000/api/maero/buylist/I`
+    : `${process.env.CLIENT_URL}/api/maero/buylist/I`;
+    // : `http://localhost:3000/api/maero/buylist/I`
 
   console.log('_getBuylistWithId : ', payload.b_order_id, ' url : ', url)
   return await axios.post(url, payload)
