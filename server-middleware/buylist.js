@@ -15,7 +15,7 @@ let pool = mysql.createPool({
 
 app.use(express.json())
 app.post('/:type', (req, res, next) => {
-  // console.log('Request URL:', req.originalUrl);
+  console.log('Request URL:', req.originalUrl);
   const payload = req.body;
   // const { order_id } = payload;
   // const tmpHost = Host ? Host : 'localhost'
@@ -26,9 +26,15 @@ app.post('/:type', (req, res, next) => {
   console.log(req.params.type)
   var ret=[];
   let setQuery = '' 
-  if (req.params.type === 'C' ) {
+  if (req.params.type === 'C' || req.params.type === 'I') {
     // Check
-    // setQuery = `SELECT count(*) AS isPass FROM orders WHERE User = '${User}' AND Password = '${Password}';`;
+    const { b_order_id } = payload;
+    console.log('type C : ', payload)
+    if( isNull(b_order_id) == true ) {
+      res.status(404).send('error');
+    }
+    setQuery = `SELECT t1.*, t2.brand, t3.* FROM orders AS t1 LEFT JOIN products AS t2 ON t1.product_id = t2.product_id LEFT JOIN buylist AS t3 ON t1.order_id = t3.order_id_f WHERE t1.order_id = ${b_order_id};`;
+    // setQuery = `SELECT t1.*, t2.brand, t3.* FROM orders AS t1 LEFT JOIN products AS t2 ON t1.product_id = t2.product_id LEFT JOIN buylist AS t3 ON t1.order_id = t3.order_id_f;`;
   } else if (req.params.type === 'U' ) {
     // Update
     const { b_order_id, b_date, b_enquiry, b_supplier, b_sup_price_won, b_remarks, b_waybill, b_waybill_date, b_memo } = payload;
@@ -46,7 +52,7 @@ app.post('/:type', (req, res, next) => {
     // setQuery = `UPDATE buylist SET ${updatefield} = ${updatevalue} WHERE order_id_f = ${b_order_id};`;
   } else if (req.params.type === 'R' ) {
     // Read
-    setQuery = `SELECT t1.*, t2.brand, t3.* FROM orders AS t1 LEFT JOIN products AS t2 ON t1.product_id = t2.product_id LEFT JOIN buylist AS t3 ON t1.order_id = t3.order_id_f`;
+    setQuery = `SELECT t1.*, t2.brand, t3.* FROM orders AS t1 LEFT JOIN products AS t2 ON t1.product_id = t2.product_id LEFT JOIN buylist AS t3 ON t1.order_id = t3.order_id_f;`;
   } else if (req.params.type === 'D' ) {
     // Delete
     // setQuery = `DELETE FROM orders WHERE User = '${User}';`;
@@ -65,20 +71,17 @@ app.post('/:type', (req, res, next) => {
           res.status(500).send('fail ')
         }
         
-        // if (req.params.type === 'C' ) {
-        //   console.log(row[0].isPass)
-        //   ret = JSON.stringify({result: row[0].isPass});
-        // } else 
-        // console.log(row[0])
-        if (req.params.type === 'R' ) {
+        if (req.params.type === 'R' || req.params.type === 'C' || req.params.type === 'I') {
           // const tmpHost = Host ? Host : 'localhost'
           // const tmpPriv = Priv ? Priv : '1'
           // const tmpPhone = Phone ? Phone : ''
           // console.log(`login !!! ${User}, ${Password}, ${tmpHost}, ${tmpPriv}, ${Phone}`)
-
+            
           var dat = [];          
           for (var i = 0;i < row.length; i++) {
-            if ( isNull(row[i].order_id_f) == true ) {
+            if ( isNull(row[i].order_id_f) == true && req.params.type === 'R' ) {
+              // DB Table 'buylist', add Item
+
               // row[i].product_id
               // row[i].product_name
               // row[i].price
@@ -97,6 +100,9 @@ app.post('/:type', (req, res, next) => {
               // row[i].order_memo 
               // row[i].status
               // row[i].brand
+
+              
+              // (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
               const current = new Date();
               const YYYY = current.getFullYear();
               const MM  = (current.getMonth()+1) > 9 ? (current.getMonth()+1) : `0${current.getMonth()+1}`;
@@ -121,6 +127,7 @@ app.post('/:type', (req, res, next) => {
                 insertListQeury = `${insertListQeury}, (${row[i].order_id_f}, '${row[i].date}')`
               }
             }
+            
 
             dat.push({                           
               o_product_id:   row[i].product_id, 
@@ -158,36 +165,38 @@ app.post('/:type', (req, res, next) => {
               align: 'start',
               // sortable: false,
               value: 'b_date',
+              width: '100px'
             },
-            { text: '주문ID', value: 'o_order_id', },
-            { text: '상품ID', value: 'o_product_id', },
-            { text: '상품명', value: 'o_product_name' },
-            { text: '브랜드', value: 'p_brand' },
-            { text: '수량', value: 'o_amount' },
-            { text: '옵션', value: 'o_color_size' },
-            { text: '連絡事項', value: 'b_enquiry', color: 'green' },
+            { text: '주문ID', value: 'o_order_id'},
+            { text: '상품ID', value: 'o_product_id'},
+            { text: '상품명', value: 'o_product_name'},
+            { text: '브랜드', value: 'p_brand'},
+            { text: '수량', value: 'o_amount'},
+            { text: '옵션', value: 'o_color_size'},
+            { text: '連絡事項', value: 'b_enquiry'},
             { text: '성명（本名）', value: 'o_recv_name' },
             { text: '우편번호', value: 'o_recv_zip_code' },
-            { text: '주소', value: 'o_recv_addr' },
+            { text: '주소', value: 'o_recv_addr'},
             { text: '전화번호', value: 'o_recv_phone' },
             { text: '운송방법', value: 'o_delivery_type' },
             { text: '구매자ID', value: 'o_name' },
-            { text: '매입처', value: 'b_supplier', color: 'green' },
-            { text: '매입가', value: 'b_sup_price_won', color: 'green' },
+            { text: '매입처', value: 'b_supplier'},
+            { text: '매입가', value: 'b_sup_price_won'},
             { text: '판매가', value: 'o_price' },
             { text: '상태', value: 'o_status' },
-            { text: '특이사항', value: 'b_remarks', color: 'green' },
-            { text: '주문번호', value: 'b_waybill', color: 'green' },
-            { text: '매입일', value: 'b_waybill_date', color: 'green' },
-            { text: 'memo', value: 'b_memo', color: 'green' },
+            { text: '특이사항', value: 'b_remarks'},
+            { text: '주문번호', value: 'b_waybill'},
+            { text: '매입일', value: 'b_waybill_date'},
+            { text: 'memo', value: 'b_memo'},
           ]
           ret = JSON.stringify({Header: header, Search: dat});
         }
         res.header('Content-Type', 'application/json; charset=utf-8')
         res.status(200).send(ret)
 
-        // order_id_f is null -> insert into buylist
-        if (insertListQeury.length > 0) {
+        if (insertListQeury.length > 0 && req.params.type === 'R') {
+          // order_id_f is null -> insert into buylist
+
           console.log('insertListQeury length : ', insertListQeury.length);
           // console.log('insertListQeury : ', insertListQeury)
           let secondQuery = `REPLACE INTO buylist(order_id_f, date) VALUES ${insertListQeury};`

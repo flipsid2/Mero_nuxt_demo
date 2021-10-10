@@ -100,7 +100,7 @@ app.post('/:type', (req, res, next) => {
             { text: '連絡事項', value: 'message' },
             { text: '名前（ローマ字）', value: 'en_name' },
             { text: '住所(ローマ字)', value: 'en_addr' },
-            { text: '受注メモ', value: 'order_meno' },
+            { text: '受注メモ', value: 'order_memo' },
             { text: '상태', value: 'status' },
             { text: 'Actions', value: 'actions', sortable: false },
           ]

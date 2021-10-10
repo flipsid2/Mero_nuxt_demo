@@ -39,7 +39,7 @@ export default {
         const res = await _fetchOrders({
           ...payload
         })
-        console.log('result : ', res.data)
+        // console.log('result : ', res.data)
         const { Header, Search } = res.data
 
         commit('updateState', {
@@ -62,7 +62,7 @@ export default {
         })
         if (res.status === 200) {
           // 성공시
-          console.log('setUpdateOrder success :' + res.data)
+          // console.log('setUpdateOrder success :' + res.data)
           commit('updateOrder', {
             row: row,
             item: item
@@ -84,7 +84,7 @@ export default {
         })
         if (res.status === 200) {
           // 성공시
-          console.log('setAddOrder success :' + res.data)
+          // console.log('setAddOrder success :' + res.data)
           commit('addOrder', {
             item: item
           })
@@ -105,7 +105,7 @@ export default {
         })
         if (res.status === 200) {
           // 성공시
-          console.log('setDelOrder success :' + res.data)
+          // console.log('setDelOrder success :' + res.data)
           commit('deleteOrder', {
             item: item
           })

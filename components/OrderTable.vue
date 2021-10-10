@@ -1,12 +1,53 @@
 <template>
   <v-app>
+    <v-card-title>
+      주문목록
+      <v-spacer></v-spacer>
+      <wj-barcode-qr-code :value="theValue"></wj-barcode-qr-code>
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Search"
+        single-line
+        hide-details
+      ></v-text-field>
+
+      <v-container>
+        <v-file-input
+          v-model="files"
+          accept="text/csv"
+          placeholder="Select your CSV file"
+          label="File input"
+          multiple
+          prepend-icon="mdi-paperclip"
+          @change="parsefile"
+        >
+          <template v-slot:selection="{ text }">
+            <v-chip
+              small
+              label
+              color="primary"
+            >
+              {{ text }}
+            </v-chip>
+          </template>
+        </v-file-input>
+      </v-container>
+    </v-card-title>
+
     <v-data-table
+      dense
       :headers=headers
       :items=desserts
+      :footer-props="{'items-per-page-options':[-1]}"
+      hide-default-footer
+      :search="search"
       :loading="loading"
       loading-text="Loading... Please wait"
-      sort-by="calories"
+      sort-by='product_id'
       class="elevation-1"
+
+      style="display:block;white-space: nowrap;overflow-x:hidden;overflow-y:auto;text-overflow:ellipsis;"
     >
       <template v-slot:top>
         <v-toolbar
@@ -148,8 +189,12 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex'
+import '@grapecity/wijmo.vue2.barcode.common'
 
   export default {
+    components: {
+      
+    },
     data: () => ({
       dialog: false,
       dialogDelete: false,
@@ -167,6 +212,9 @@ import { mapState, mapGetters } from 'vuex'
         Level: 1,
         Phone: '010',
       },
+      search: '',
+      files: [],
+      theValue: 'https://en.wikipedia.org/wiki/QR_code'
     }),
 
     computed: {
@@ -249,6 +297,49 @@ import { mapState, mapGetters } from 'vuex'
         }
         this.close()
       },
+
+      parsefile(files) {
+        console.log('parsefile : ', files[0].name)
+        var reader = new FileReader();
+      
+        // Use the javascript reader object to load the contents
+        // of the file in the v-model prop
+        var header = [
+          'product_id',
+          'product_name',
+          'price',
+          'amount',
+          'order_id',
+          'name',
+          'recv_name',
+          'recv_zip_code',
+          'recv_addr',
+          'recv_phone',
+          'delivery_type',
+          'color_size',
+          'message',
+          'en_name',
+          'en_addr',
+          'order_memo',
+          'status'
+        ]
+
+        reader.readAsText(files[0]);
+        reader.onload = () => {
+          const input = reader.result
+          // const lines = input.replace(/[^0-9,^,]/g, '').split('\n') 
+          // const pattern = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/   // email pattern
+          // replace(/(\s*)/g, '') : 필드에 들어간 모든 빈칸을 제거
+          const lines = input.split('\n')
+          // const output = lines.map(line => {
+          const output = lines.slice(1).map(line => {
+            const fields = line.replace(/[(")]/g, '').split(',')
+            return Object.fromEntries(header.map( (h, i) => [h, fields[i]]))
+          })
+
+          console.log(output)
+        }
+      }
     },
   }
 </script>

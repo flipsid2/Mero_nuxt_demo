@@ -1,15 +1,131 @@
 <template>
   <v-app>
+    <v-card-title>
+      매입정보
+      <v-spacer></v-spacer>
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Search"
+        single-line
+        hide-details
+      ></v-text-field>
+      
+      <v-container>
+        <v-toolbar 
+          dense
+          background-color="primary"
+          rounded
+        >
+          <v-overflow-btn
+            :items="dropdown_font"
+            label="Select font"
+            hide-details
+            class="pa-0"
+          ></v-overflow-btn>
+
+          <template v-if="$vuetify.breakpoint.mdAndUp">
+            <v-divider vertical></v-divider>
+
+            <v-overflow-btn
+              :items="dropdown_edit"
+              editable
+              label="Select size"
+              hide-details
+              class="pa-0"
+              overflow
+            ></v-overflow-btn>
+
+            <v-divider vertical></v-divider>
+
+            <v-spacer></v-spacer>
+
+            <v-btn-toggle
+              v-model="toggle_multiple"
+              color="primary"
+              dense
+              group
+              multiple
+            >
+              <v-btn
+                :value="1"
+                text
+              >
+                <v-icon>mdi-format-color-fill</v-icon>
+                mFilter1
+              </v-btn>
+
+              <v-btn
+                :value="2"
+                text
+              >
+                <v-icon>mdi-format-color-fill</v-icon>
+                mFilter2
+              </v-btn>
+
+              <v-btn
+                :value="3"
+                text
+              >
+                <v-icon>mdi-format-color-fill</v-icon>
+                mFilter3
+              </v-btn>
+
+            </v-btn-toggle>
+
+            <div class="mx-4"></div>
+
+            <v-btn-toggle
+              v-model="toggle_exclusive"
+              color="primary"
+              dense
+              group
+            >
+              <v-btn
+                :value="1"
+                text
+              >
+                <v-icon>mdi-format-color-fill</v-icon>
+                sFilter1
+              </v-btn>
+
+              <v-btn
+                :value="2"
+                text
+              >
+                <v-icon>mdi-format-color-fill</v-icon>
+                sFilter2
+              </v-btn>
+
+              <v-btn
+                :value="3"
+                text
+              >
+                <v-icon>mdi-format-color-fill</v-icon>
+                sFilter3
+              </v-btn>
+            </v-btn-toggle>
+          </template>
+        </v-toolbar>
+      </v-container>
+
+      
+    </v-card-title>
+
     <v-data-table
+      dense
       :headers=headers
       :items=desserts
       :footer-props="{'items-per-page-options':[-1]}"
       hide-default-footer
+      :search="search"
       :loading="loading"
       loading-text="Loading... Please wait"
       sort-by='b_date'
       class="elevation-1"
       @click:row="handleClick"
+
+      style="display:block;white-space: nowrap;overflow-x:hidden;overflow-y:auto;text-overflow:ellipsis;"
     >
       <!-- <template v-slot:item.b_date="props">
         <v-edit-dialog
@@ -17,14 +133,14 @@
           persistent 
           @save="saveData(props.item, 'b_date')"
           @open="editData = props.item.b_date"
-        >
+        >ß
           {{ props.item.b_date }}
           <template v-slot:input>
             <v-text-field
               v-model="editData"
               :rules="[max10chars]"
               label="Edit"
-              single-line
+              single-line`
               counter
             ></v-text-field>
           </template>
@@ -32,98 +148,137 @@
       </template> -->
 
       <template v-slot:top>
-        <v-toolbar
-          flat
+        <v-dialog
+          v-model="dialog"
+          max-width="600px"
         >
-          <v-toolbar-title>매입정보</v-toolbar-title>
-          <v-divider
-            class="mx-4"
-            inset
-            vertical
-          ></v-divider>
-          <v-spacer></v-spacer>
-          <v-dialog
-            v-model="dialog"
-            max-width="600px"
-          >
-            <v-card>
-              <v-card-title>
-                <span class="text-h5">{{editedItem.o_product_name}}</span>
-              </v-card-title>
-              <v-card-subtitle>
-                <v-container>
-                  <v-row>
-                    <v-col cols="12" sm="6" md="4">
-                      <span class="text-h15">주문ID : {{editedItem.b_order_id}}</span>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <span class="text-h15">상품ID : {{editedItem.o_product_id}}</span>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-card-subtitle>
-              <v-card-text>
-                <v-container>
-                  <v-row>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.b_enquiry" label="連絡事項"                        
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.b_supplier" label="매입처"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.b_sup_price_won" label="매입가"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.b_remarks" label="특이사항"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.b_waybill" label="주문번호"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.b_waybill_date" label="매입일"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.b_memo" label="memo"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-card-text>
+          <v-card>
+            <v-card-title>
+              <span class="text-h5">{{editedItem.o_product_name}}</span>
+            </v-card-title>
+            <v-card-subtitle>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="6" md="4">
+                    <span class="text-h15">주문ID : {{editedItem.b_order_id}}</span>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <span class="text-h15">상품ID : {{editedItem.o_product_id}}</span>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-subtitle>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="editedItem.b_enquiry" label="連絡事項"                        
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="editedItem.b_supplier" label="매입처"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="editedItem.b_sup_price_won" label="매입가"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="editedItem.b_remarks" label="특이사항"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="editedItem.b_waybill" label="주문번호"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="editedItem.b_memo" label="memo"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-menu
+                      v-model="menu"
+                      :close-on-content-click="false"
+                      :nudge-right="40"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="auto"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          v-model="date"
+                          label="매입일자"
+                          prepend-icon="mdi-calendar"
+                          readonly
+                          v-bind="attrs"
+                          v-on="on"
+                        ></v-text-field>
+                      </template>
+                      <v-date-picker
+                        v-model="date"
+                        @input="menu = false"
+                      ></v-date-picker>
+                    </v-menu>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-menu
+                      ref="menu"
+                      v-model="menu2"
+                      :close-on-content-click="false"
+                      :nudge-right="40"
+                      :return-value.sync="time"
+                      transition="scale-transition"
+                      offset-y
+                      max-width="290px"
+                      min-width="290px"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          v-model="time"
+                          label="매입시간"
+                          prepend-icon="mdi-clock-time-four-outline"
+                          readonly
+                          v-bind="attrs"
+                          v-on="on"
+                        ></v-text-field>
+                      </template>
+                      <v-time-picker
+                        v-if="menu2"
+                        v-model="time"
+                        full-width
+                        @click:minute="$refs.menu.save(time)"
+                      ></v-time-picker>
+                    </v-menu>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
 
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn
-                  color="blue darken-1"
-                  text
-                  @click="close"
-                >
-                  Cancel
-                </v-btn>
-                <v-btn
-                  color="blue darken-1"
-                  text
-                  @click="save"
-                >
-                  Save
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </v-toolbar>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                color="blue darken-1"
+                text
+                @click="close"
+              >
+                Cancel
+              </v-btn>
+              <v-btn
+                color="blue darken-1"
+                text
+                @click="save"
+              >
+                Save
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </template>
 
       <template v-slot:no-data>
@@ -205,7 +360,7 @@ import { mapState, mapGetters } from 'vuex'
         b_waybill_date: '', 
         b_memo:         ''
       },
-
+      search: '',
       editData: '',
       snack: false,
       snackColor: '',
@@ -214,6 +369,25 @@ import { mapState, mapGetters } from 'vuex'
       max20chars: v => v.length <= 20 || 'Input too long!',
       max50chars: v => v.length <= 50 || 'Input too long!',
       max100chars: v => v.length <= 100 || 'Input too long!',
+      dropdown_font: [
+        { text: 'Arial' },
+        { text: 'Calibri' },
+        { text: 'Courier' },
+        { text: 'Verdana' }
+      ],
+      dropdown_edit: [
+        { text: '100%' },
+        { text: '75%' },
+        { text: '50%' },
+        { text: '25%' },
+        { text: '0%' }
+      ],
+      toggle_exclusive: 2,
+      toggle_multiple: [1, 2, 3],
+      date: null,
+      menu: false,
+      time: null,
+      menu2: false,
     }),
 
     computed: {
@@ -245,6 +419,7 @@ import { mapState, mapGetters } from 'vuex'
         if (this.editedIndex > -1) {
           console.log('editedItem(', this.editedIndex, ') : ', this.editedItem)
 
+          this.editedItem.b_waybill_date = (this.editedItem.b_waybill) ? `${this.date} ${this.time}` : ''
           this.$store.dispatch('buylist/setUpdateBuylist', {
             row: this.editedIndex,
             item: this.editedItem
@@ -272,6 +447,8 @@ import { mapState, mapGetters } from 'vuex'
         this.$nextTick(() => {
           this.editedItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
+          this.date = null
+          this.time = null
         })
       },
 
@@ -287,6 +464,11 @@ import { mapState, mapGetters } from 'vuex'
         // console.log('handleClick: ', row.o_product_name)
         this.editedIndex = this.desserts.indexOf(row)
         this.editedItem = Object.assign({}, row)
+        if( row.b_waybill_date.length > 10 ) {
+          this.date = row.b_waybill_date.substring(0,10)
+          this.time = row.b_waybill_date.substring(11,16)
+          // console.log('b_waybill_date: ', row.b_waybill_date, ' : ', this.date, ' : ', this.time)
+        } 
         this.dialog = true
       },
     },

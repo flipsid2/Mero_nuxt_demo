@@ -6,10 +6,14 @@ export default {
   state: () => ({
     header: [],
     buylist: [],
+    loading: false,
+    buyitem: {},
   }),
   getters: {
     header      (state) { return state.header },
     buylist     (state) { return state.buylist },
+    buyitem     (state) { return state.buyitem },
+    loading     (state) { return state.loading },
   },
   mutations: {
     updateState(state, payload) {
@@ -36,6 +40,11 @@ export default {
   },
   actions: {
     async getBuylist({ state, commit }, payload) {
+      commit('updateState', {
+        buylist: [],
+        loading: true
+      })
+
       try {
         const res = await _getBuylist({
           ...payload
@@ -52,7 +61,42 @@ export default {
         commit('updateState', {
           buylist: []
         })
-      } 
+      } finally {
+        commit('updateState', {
+          loading: false
+        })
+      }
+    },
+    async getBuylistWithId({ state, commit }, payload) {
+      commit('updateState', {
+        buyitem: {},
+        loading: true
+      })
+
+      console.log('getBuylistWithId : ', payload )
+
+      try {
+        const res = await _getBuylistWithId({
+          ...payload
+        })
+        console.log('result(Id) : ', res.data)
+        const { Header, Search } = res.data
+
+        commit('updateState', {
+          buyitem: Search[0],
+          header: Header
+        })
+
+      } catch ({ message }) {
+        console.log('result(Id) message : ', message)
+        commit('updateState', {
+          buyitem: {}
+        })
+      } finally {
+        commit('updateState', {
+          loading: false
+        })
+      }
     },
     async setUpdateBuylist({ state, commit }, payload) {
       const {row, item } = payload
@@ -127,6 +171,18 @@ async function _getBuylist(payload) {
   const url = process.client
     ? '/api/maero/buylist/R'
     : `${process.env.CLIENT_URL}/api/maero/buylist/R`
+  
+  console.log('_getBuylist : ', payload.b_order_id, ' url : ', url)
+  return await axios.post(url, payload)
+}
+
+async function _getBuylistWithId(payload) {
+  const url = process.client
+    ? '/api/maero/buylist/I'
+    // : `${process.env.CLIENT_URL}/api/maero/buylist/I`;
+    : '/api/maero/buylist/I'
+  
+  console.log('_getBuylistWithId : ', payload.b_order_id, ' url : ', url)
   return await axios.post(url, payload)
 }
 
