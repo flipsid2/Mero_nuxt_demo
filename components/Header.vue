@@ -1,29 +1,32 @@
 <template>
-  <header>
+  <v-toolbar
+    color="primary"
+    fixed
+    dark
+    app
+  >
+    <v-btn icon @click="toggleDrawer()">
+      <v-icon>mdi-menu</v-icon>
+    </v-btn>
     <Logo />
-    <div class="nav nav-pills">
-      <div
-        v-for="nav in navigations"
-        :key="nav.name"
-        class="nav-item">
-        <NuxtLink
-          :to="nav.href"
-          active-class="active"
-          :class="{ active: isMatch(nav.path) }"
-          class="nav-link"
-          exact>
-          {{ nav.name }}
-        </NuxtLink>
-      </div>
-    </div>
-    <div
-      class="user"
-      @click="toAbout">
-      <img
-        :src="image"
-        :alt="name" />
-    </div>
-  </header>
+    <!-- <v-btn
+      v-for="nav in navigations"
+      :key="nav.name"
+      class="nav-item">
+      <NuxtLink
+        :to="nav.href"
+        active-class="active"
+        :class="{ active: isMatch(nav.path) }"
+        class="nav-link"
+        exact>
+        {{ nav.name }}
+      </NuxtLink>
+    </v-btn> -->
+    <!-- <v-spacer></v-spacer>
+    <v-btn class="mr-0" icon @click="toAbout">
+      <v-icon medium>mdi-account</v-icon>
+    </v-btn> -->
+  </v-toolbar>
 </template>
 
 <script>
@@ -66,7 +69,10 @@ export default {
     },
     toAbout() {
       this.$router.push('/about')
-    }
+    },
+    toggleDrawer() {
+      this.$store.commit('toggleDrawer')
+    },
   }
 }
 </script>
@@ -76,7 +82,7 @@ header {
   height: 70px;
   display: flex;
   align-items: center;
-  padding: 0 40px;
+  // padding: 0 40px;
   position: relative;
   // margin-left: 280px;
   .logo {

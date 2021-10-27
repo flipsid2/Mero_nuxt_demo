@@ -8,6 +8,7 @@ export default {
       { title: 'About', icon: 'mdi-moped-electric', target: "/about" },
       { title: 'tagging', icon: 'mdi-tag-arrow-right', target: "/about" },
       { title: 'Setup', icon: 'mdi-cog', target: "/useradmin" },
+      { title: 'Filter_Table', icon: 'mdi-table', target: "/filtertable" },
     ],
   })
 }

@@ -164,6 +164,47 @@
       @contextmenu:row="show"
       style="display:block;white-space: nowrap;overflow-x:hidden;overflow-y:auto;text-overflow:ellipsis;"
     >
+      <template v-for="(col, i) in filters" v-slot:[`header.${i}`]="{ header }">
+        <div style="display: inline-block; padding: 16px 0;">{{ header.text }}</div>
+        <div style="float: right; margin-top: 8px">
+          <v-menu :close-on-content-click="false" :nudge-width="200" offset-y transition="slide-y-transition" left fixed style="position: absolute; right: 0">
+            <template v-slot:activator="{ on, attrs }">
+            <v-btn color="indigo" icon v-bind="attrs" v-on="on">
+              <v-icon small 
+              :color="activeFilters[header.value] && activeFilters[header.value].length < filters[header.value].length ? 'red' : 'default'">
+              mdi-filter-variant
+              </v-icon>
+            </v-btn>
+            </template>
+            <v-list flat dense class="pa-0">
+            <v-list-item-group multiple v-model="activeFilters[header.value]" class="py-2">
+              <template v-for="(item, i) in filters[header.value]">
+              <v-list-item :key="`${item}`" :value="item" :ripple="false">
+                <template v-slot:default="{ active, toggle }">
+                <v-list-item-action>
+                  <v-checkbox :input-value="active" :true-value="item"
+                  @click="toggle" color="primary" :ripple="false" dense></v-checkbox>
+                </v-list-item-action>
+                <v-list-item-content> 
+                  <v-list-item-title v-text="item"></v-list-item-title>
+                </v-list-item-content>
+                </template>
+              </v-list-item>
+              </template>
+            </v-list-item-group>
+            <v-divider></v-divider>
+            <v-row no-gutters>
+              <v-col cols="6">
+              <v-btn text block @click="toggleAll(header.value)" color="success">Toggle all</v-btn>
+              </v-col>
+              <v-col cols="6">
+              <v-btn text block @click="clearAll(header.value)" color="warning">Clear all</v-btn>
+              </v-col>
+            </v-row>
+            </v-list>
+          </v-menu>
+        </div>
+      </template>
       <template slot="items" slot-scope="props">
         <td>
           <v-checkbox :input-value="props.selected" hide-details class="align-center justify-center"></v-checkbox>
@@ -177,7 +218,7 @@
           {{ item.o_amount }}
         </v-chip>
       </template>    
-
+<!-- 
       <template v-slot:top>
         <v-dialog
           v-model="dialog"
@@ -310,9 +351,9 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-      </template>
+      </template> -->
 
-      <!-- <template v-slot:top>
+      <template v-slot:top>
         <v-menu
             dense
             v-model="showMenu"
@@ -331,7 +372,7 @@
                 </v-list-item>
             </v-list>
         </v-menu>
-      </template> -->
+      </template>
 
       <template v-slot:no-data>
         <v-btn
@@ -482,80 +523,80 @@ import Util from '@/util';
         // menu2: false,
 
         // Filter
-        // filters: { 
-        //   'b_date': [], 'p_brand': [], 'o_amount': [], 'o_color_size': [], 'o_delivery_type': [], 
-        //   'o_name': [], 'b_supplier': [], 'o_status': [], 'b_waybill_date': [] 
-        // },
-        // activeFilters: {},
+        filters: { 
+          'b_date': [], 'p_brand': [], 'o_amount': [], 'o_color_size': [], 'o_delivery_type': [], 
+          'o_name': [], 'b_supplier': [], 'o_status': [], 'b_waybill_date': [] 
+        },
+        activeFilters: {},
       };
     },
 
     computed: {
       headers: function() {
-        return this.$store.getters["buylist/header"];
-        // return [
-        //   {
-        //     text: '일자',
-        //     align: 'start',
-        //     // sortable: false,
-        //     value: 'b_date',
-        //     filter: value => {
-        //         return this.activeFilters.b_date ? this.activeFilters.b_date.includes(value) : true;
-        //     }
-        //   },
-        //   { text: '주문ID', value: 'o_order_id' },
-        //   { text: '상품ID', value: 'o_product_id' },
-        //   { text: '상품명', value: 'o_product_name'},
-        //   { text: '브랜드', value: 'p_brand',
-        //     filter: value => {
-        //         return this.activeFilters.p_brand ? this.activeFilters.p_brand.includes(value) : true;
-        //     }
-        //   },
-        //   { text: '수량', value: 'o_amount',
-        //     filter: value => {
-        //         return this.activeFilters.o_amount ? this.activeFilters.o_amount.includes(value) : true;
-        //     }
-        //   },
-        //   { text: '옵션', value: 'o_color_size',
-        //     filter: value => {
-        //         return this.activeFilters.o_color_size ? this.activeFilters.o_color_size.includes(value) : true;
-        //     }
-        //   },
-        //   { text: '連絡事項', value: 'b_enquiry'},
-        //   { text: '성명（本名）', value: 'o_recv_name' },
-        //   { text: '우편번호', value: 'o_recv_zip_code' },
-        //   { text: '주소', value: 'o_recv_addr'},
-        //   { text: '전화번호', value: 'o_recv_phone' },
-        //   { text: '운송방법', value: 'o_delivery_type',
-        //     filter: value => {
-        //         return this.activeFilters.o_delivery_type ? this.activeFilters.o_delivery_type.includes(value) : true;
-        //     }
-        //   },
-        //   { text: '구매자ID', value: 'o_name',
-        //     filter: value => {
-        //         return this.activeFilters.o_name ? this.activeFilters.o_name.includes(value) : true;
-        //     }
-        //   },
-        //   { text: '매입처', value: 'b_supplier',
-        //     filter: value => {
-        //         return this.activeFilters.b_supplier ? this.activeFilters.b_supplier.includes(value) : true;
-        //     }
-        //   },
-        //   { text: '매입가', value: 'b_sup_price_won'},
-        //   { text: '판매가', value: 'o_price' },
-        //   { text: '상태', value: 'o_status', 
-        //     filter: value => {
-        //         return this.activeFilters.o_status ? this.activeFilters.o_status.includes(value) : true;
-        //     }
-        //   },
-        //   { text: '특이사항', value: 'b_remarks'},
-        //   { text: '주문번호', value: 'b_waybill'},
-        //   { text: '매입일', value: 'b_waybill_date', 
-        //     filter: value => {
-        //         return this.activeFilters.b_waybill_date ? this.activeFilters.b_waybill_date.includes(value) : true;
-        //     }},
-        //   { text: 'memo', value: 'b_memo'},
-        // ]
+        // return this.$store.getters["buylist/header"];
+        return [
+          {
+            text: '일자',
+            align: 'start',
+            // sortable: false,
+            value: 'b_date',
+            filter: value => {
+                return this.activeFilters.b_date ? this.activeFilters.b_date.includes(value) : true;
+            }
+          },
+          { text: '주문ID', value: 'o_order_id' },
+          { text: '상품ID', value: 'o_product_id' },
+          { text: '상품명', value: 'o_product_name'},
+          { text: '브랜드', value: 'p_brand',
+            filter: value => {
+                return this.activeFilters.p_brand ? this.activeFilters.p_brand.includes(value) : true;
+            }
+          },
+          { text: '수량', value: 'o_amount',
+            filter: value => {
+                return this.activeFilters.o_amount ? this.activeFilters.o_amount.includes(value) : true;
+            }
+          },
+          { text: '옵션', value: 'o_color_size',
+            filter: value => {
+                return this.activeFilters.o_color_size ? this.activeFilters.o_color_size.includes(value) : true;
+            }
+          },
+          { text: '連絡事項', value: 'b_enquiry'},
+          { text: '성명（本名）', value: 'o_recv_name' },
+          { text: '우편번호', value: 'o_recv_zip_code' },
+          { text: '주소', value: 'o_recv_addr'},
+          { text: '전화번호', value: 'o_recv_phone' },
+          { text: '운송방법', value: 'o_delivery_type',
+            filter: value => {
+                return this.activeFilters.o_delivery_type ? this.activeFilters.o_delivery_type.includes(value) : true;
+            }
+          },
+          { text: '구매자ID', value: 'o_name',
+            filter: value => {
+                return this.activeFilters.o_name ? this.activeFilters.o_name.includes(value) : true;
+            }
+          },
+          { text: '매입처', value: 'b_supplier',
+            filter: value => {
+                return this.activeFilters.b_supplier ? this.activeFilters.b_supplier.includes(value) : true;
+            }
+          },
+          { text: '매입가', value: 'b_sup_price_won'},
+          { text: '판매가', value: 'o_price' },
+          { text: '상태', value: 'o_status', 
+            filter: value => {
+                return this.activeFilters.o_status ? this.activeFilters.o_status.includes(value) : true;
+            }
+          },
+          { text: '특이사항', value: 'b_remarks'},
+          { text: '주문번호', value: 'b_waybill'},
+          { text: '매입일', value: 'b_waybill_date', 
+            filter: value => {
+                return this.activeFilters.b_waybill_date ? this.activeFilters.b_waybill_date.includes(value) : true;
+            }},
+          { text: 'memo', value: 'b_memo'},
+        ]
       },
       desserts: function() {
         this.loading = false
@@ -587,11 +628,11 @@ import Util from '@/util';
       dialog (val) {
         val || this.close()
       },
-      // desserts (val) {
-      //   this.initFilters()
-      //   //this.activeFilters = {} // TODO change this
-      //   //this.activeFilters = Object.assign({}, this.filters)
-      // },
+      desserts (val) {
+        this.initFilters()
+        //this.activeFilters = {} // TODO change this
+        //this.activeFilters = Object.assign({}, this.filters)
+      },
       date (val) {
         this.dateFormatted = this.formatDate(this.date)
       },
@@ -616,42 +657,42 @@ import Util from '@/util';
         this.$store.dispatch('buylist/getBuylist')
       },
     
-      save () {
-        if (this.editedIndex > -1) {
-          console.log('editedItem(', this.editedIndex, ') : ', this.editedItem)
+      // save () {
+      //   if (this.editedIndex > -1) {
+      //     console.log('editedItem(', this.editedIndex, ') : ', this.editedItem)
 
-          this.editedItem.b_waybill_date = (this.editedItem.b_waybill) ? `${this.date} ${this.time}` : ''
-          this.$store.dispatch('buylist/setUpdateBuylist', {
-            row: this.editedIndex,
-            item: this.editedItem
-          })
-        }
+      //     this.editedItem.b_waybill_date = (this.editedItem.b_waybill) ? `${this.date} ${this.time}` : ''
+      //     this.$store.dispatch('buylist/setUpdateBuylist', {
+      //       row: this.editedIndex,
+      //       item: this.editedItem
+      //     })
+      //   }
 
-        this.snack = true
-        this.snackColor = 'success'
-        this.snackText = 'Data saved'
-        this.close()
-      },
-      cancel () {
-        this.snack = true
-        this.snackColor = 'error'
-        this.snackText = 'Canceled'
-        this.close()
-      },
-      open () {
-        this.snack = true
-        this.snackColor = 'info'
-        this.snackText = 'Dialog opened'
-      },
-      close () {
-        this.dialog = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-          this.date = null
-          this.time = null
-        })
-      },
+      //   this.snack = true
+      //   this.snackColor = 'success'
+      //   this.snackText = 'Data saved'
+      //   this.close()
+      // },
+      // cancel () {
+      //   this.snack = true
+      //   this.snackColor = 'error'
+      //   this.snackText = 'Canceled'
+      //   this.close()
+      // },
+      // open () {
+      //   this.snack = true
+      //   this.snackColor = 'info'
+      //   this.snackText = 'Dialog opened'
+      // },
+      // close () {
+      //   this.dialog = false
+      //   this.$nextTick(() => {
+      //     this.editedItem = Object.assign({}, this.defaultItem)
+      //     this.editedIndex = -1
+      //     this.date = null
+      //     this.time = null
+      //   })
+      // },
 
       handleClick(row) {
         // set active row and deselect others
@@ -662,47 +703,47 @@ import Util from '@/util';
         // })
 
         // or just do something with your current clicked row item data
-        // console.log('handleClick: ', row)
+        console.log('handleClick: ', row)
 
 
 
         // Dialog 사용시
-        this.editedIndex = this.desserts.indexOf(row)
-        this.editedItem = Object.assign({}, row)
-        if( row.b_waybill_date.length > 10 ) {
-          this.date = row.b_waybill_date.substring(0,10)
-          this.time = row.b_waybill_date.substring(11,16)
-          // console.log('b_waybill_date: ', row.b_waybill_date, ' : ', this.date, ' : ', this.time)
-        } 
-        this.dialog = true
+        // this.editedIndex = this.desserts.indexOf(row)
+        // this.editedItem = Object.assign({}, row)
+        // if( row.b_waybill_date.length > 10 ) {
+        //   this.date = row.b_waybill_date.substring(0,10)
+        //   this.time = row.b_waybill_date.substring(11,16)
+        //   // console.log('b_waybill_date: ', row.b_waybill_date, ' : ', this.date, ' : ', this.time)
+        // } 
+        // this.dialog = true
       },
 
-      // handleMenu(event, item) {
-      //   // set active row and deselect others
-      //   // this.desserts.map((item, index) => {
-      //   //     item.selected = item === row
+      handleMenu(event, item) {
+        // set active row and deselect others
+        // this.desserts.map((item, index) => {
+        //     item.selected = item === row
 
-      //   //     this.$set(this.desserts, index, item)
-      //   // })
+        //     this.$set(this.desserts, index, item)
+        // })
 
-      //   // or just do something with your current clicked row item data
-      //   // console.log('handleMenu: ', event, item)
-      //   console.log('handleMenu(selected): (', this.selected)
-      //   console.log('handleMenu: (', item.index, ') ', item.item.o_product_name)
-      //   // this.editedIndex = this.desserts.indexOf(row)
-      //   // this.editedItem = Object.assign({}, row)
-      //   // if( row.b_waybill_date.length > 10 ) {
-      //   //   this.date = row.b_waybill_date.substring(0,10)
-      //   //   this.time = row.b_waybill_date.substring(11,16)
-      //   //   // console.log('b_waybill_date: ', row.b_waybill_date, ' : ', this.date, ' : ', this.time)
-      //   // } 
-      //   this.showMenu = false;
-      //   this.x = event.clientX
-      //   this.y = event.clientY
-      //   this.$nextTick(() => {
-      //     this.showMenu = true;
-      //   });
-      // },
+        // or just do something with your current clicked row item data
+        // console.log('handleMenu: ', event, item)
+        console.log('handleMenu(selected): (', this.selected)
+        console.log('handleMenu: (', item.index, ') ', item.item.o_product_name)
+        // this.editedIndex = this.desserts.indexOf(row)
+        // this.editedItem = Object.assign({}, row)
+        // if( row.b_waybill_date.length > 10 ) {
+        //   this.date = row.b_waybill_date.substring(0,10)
+        //   this.time = row.b_waybill_date.substring(11,16)
+        //   // console.log('b_waybill_date: ', row.b_waybill_date, ' : ', this.date, ' : ', this.time)
+        // } 
+        this.showMenu = false;
+        this.x = event.clientX
+        this.y = event.clientY
+        this.$nextTick(() => {
+          this.showMenu = true;
+        });
+      },
 
       // 상태변경
       changeStatus(value) {
@@ -742,30 +783,30 @@ import Util from '@/util';
       },
 
       // Filter
-      // initFilters() {
-      //   for (let col in this.filters) {
-      //       this.filters[col] = this.desserts.map((d) => { return d[col] }).filter(
-      //       (value, index, self) => { return self.indexOf(value) === index }
-      //       )
-      //   }
-      //   // TODO restore previous activeFilters before add/remove item
-      //   this.activeFilters = Object.assign({}, this.filters)
-      //   /*if (Object.keys(this.activeFilters).length === 0) this.activeFilters = Object.assign({}, this.filters)
-      //   else {
-      //       setTimeout(() => {
-      //       console.log(this.activeFilters)
-      //       //this.activeFilters = Object.assign({}, this.filters)
-      //       }, 1)
-      //   }*/
-      // },      
-      // toggleAll (col) {
-      //   this.activeFilters[col] = this.desserts.map((d) => { return d[col] }).filter(
-      //       (value, index, self) => { return self.indexOf(value) === index }
-      //   )
-      // },      
-      // clearAll (col) {
-      //   this.activeFilters[col] = []
-      // },
+      initFilters() {
+        for (let col in this.filters) {
+            this.filters[col] = this.desserts.map((d) => { return d[col] }).filter(
+            (value, index, self) => { return self.indexOf(value) === index }
+            )
+        }
+        // TODO restore previous activeFilters before add/remove item
+        this.activeFilters = Object.assign({}, this.filters)
+        /*if (Object.keys(this.activeFilters).length === 0) this.activeFilters = Object.assign({}, this.filters)
+        else {
+            setTimeout(() => {
+            console.log(this.activeFilters)
+            //this.activeFilters = Object.assign({}, this.filters)
+            }, 1)
+        }*/
+      },      
+      toggleAll (col) {
+        this.activeFilters[col] = this.desserts.map((d) => { return d[col] }).filter(
+            (value, index, self) => { return self.indexOf(value) === index }
+        )
+      },      
+      clearAll (col) {
+        this.activeFilters[col] = []
+      },
     },
   }
 </script>

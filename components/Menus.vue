@@ -1,62 +1,55 @@
 
 // permanent
 <template>
-  <v-card
-    height="100%"
-    width="256"
-    class="mx-auto"
+  <v-navigation-drawer 
+    id="appDrawer"
+    app
+    v-model="drawer"
+    floating
+    persistent
+    width="260"
+    :mini-variant="mini"
   >
-    <v-navigation-drawer 
-      app
-      floating
-      persistent
+    <v-toolbar color="primary darken-1" dark>
+      <Logo />
+    </v-toolbar>
+
+    <v-divider></v-divider>
+
+    <v-list
+      dense
+      nav
     >
       <v-list-item
-        @click="movePage('/');"
+        v-for="item in items"
+        @click="movePage(item.target);"
+        :key="item.title"
+        link
       >
+        <v-list-item-icon>
+          <v-icon>{{ item.icon }}</v-icon>
+        </v-list-item-icon>
+
         <v-list-item-content>
-          <v-list-item-title class="text-h6">
-            Maero OMS
-          </v-list-item-title>
-          <v-list-item-subtitle>
-            Supervisor
-          </v-list-item-subtitle>
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-
-      <v-divider></v-divider>
-
-      <v-list
-        dense
-        nav
-      >
-        <v-list-item
-          v-for="item in items"
-          @click="movePage(item.target);"
-          :key="item.title"
-          link
-        >
-          <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-  </v-card>
+    </v-list>
+  </v-navigation-drawer>
 </template>
 
 <script>
 import { mapState } from "vuex";
 import _ from "lodash";
+import Logo from '~/components/Logo'
 
 export default {
+  components: {
+    Logo
+  },
   data () {
     return {
-      drawer: null,
+      mini: false,
       responsive: false,
       right: null,
     }
@@ -64,7 +57,15 @@ export default {
   computed: {
     ...mapState('menus', [
       'items'
-    ])
+    ]),
+    drawer: {
+      get() {
+        return this.$store.state.drawer
+      },
+      set(val) {
+        this.$store.commit('drawer', val)
+      }
+    },
   },
   // computed: _.extend(
   //   ...mapState(['menus', 'colors']),
@@ -87,3 +88,13 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.appDrawer {
+  overflow: hidden;
+  .drawer-menu--scroll {
+    height: calc(100vh - 48px);
+    overflow: auto;
+  }
+}
+</style>

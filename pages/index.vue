@@ -1,29 +1,38 @@
 <template>
   <div>
-    <Headline />
-    <Search />
-    <MovieList />
-    <DataTable />
+    <!-- <Search /> -->
+    <BuyListTable />
+    <!-- <CRUDTable /> -->
   </div>
 </template>
 
 <script>
-
-import Headline from '~/components/Headline'
-import Search from '~/components/Search'
-import MovieList from '~/components/MovieList'
-import DataTable from '~/components/DataTable'
+// import { mapState } from 'vuex'
+// import Search from '~/components/Search'
+import BuyListTable from '~/components/BuyListTable'
+// import CRUDTable from '~/components/CRUDTable'
 
 export default {
   components: {
-    Headline,
-    Search,
-    MovieList,
-    DataTable
+    // Search,
+    BuyListTable
+    // CRUDTable
   },
+  // computed: {
+  //   ...mapState('orders', [
+  //     'orderheaders',
+  //     'orderdesserts'
+  //   ])
+  // },
+  // v-on:desserts="updateValue($event.target.desserts)"
+  // methods: {
+  //   updateValue: function (value) {
+  //     console.log('updateValue : ', value)
+  //     // this.$emit('orderdesserts', value)
+  //   }
+  // },
   created() {
-    this.$store.commit('movie/resetMovies')
-    this.$store.commit('oauth/resetTokens')
+
   }
 }
 </script>

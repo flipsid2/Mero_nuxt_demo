@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-card class="pa-3">
     <v-card-title>
       주문목록
       <v-spacer></v-spacer>
@@ -182,7 +182,7 @@
         </v-btn>
       </template>
     </v-data-table>
-  </v-app>
+  </v-card>
 </template>
 
 

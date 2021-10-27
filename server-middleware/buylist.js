@@ -60,7 +60,7 @@ app.post('/:type', (req, res, next) => {
     res.status(404).send('error');
   };
   
-  console.log(`setQuery !!! ${setQuery}`)
+  // console.log(`setQuery !!! ${setQuery}`)
   let insertListQeury = '';
   try {
     pool.getConnection(function(err, connection) {
@@ -198,10 +198,10 @@ app.post('/:type', (req, res, next) => {
         if (insertListQeury.length > 0 && req.params.type === 'R') {
           // order_id_f is null -> insert into buylist
 
-          console.log('insertListQeury length : ', insertListQeury.length);
+          // console.log('insertListQeury length : ', insertListQeury.length);
           // console.log('insertListQeury : ', insertListQeury)
           let secondQuery = `REPLACE INTO buylist(order_id_f, date) VALUES ${insertListQeury};`
-          console.log('secondQeury : ', secondQuery)
+          // console.log('secondQeury : ', secondQuery)
 
           connection.query(secondQuery, function (error, row, fields) {
             if (error) {

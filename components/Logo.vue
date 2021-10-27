@@ -2,7 +2,7 @@
   <NuxtLink
     to="/"
     class="logo">
-    <span>MAERoAPI</span>.COM
+    <span>Maero</span>.COM
   </NuxtLink>
 </template>
 
