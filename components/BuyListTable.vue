@@ -1,6 +1,66 @@
 <template>
   <v-card>
     <v-card-title dense color='yellow'>
+      <v-row dense class="pa-0 ma-0">             
+        <v-col class="pa-1" cols="12" md="3" lg="3" xl="3">
+          <v-text-field
+            v-model="search"
+            class="pa-0 ma-0 mb-1"
+            append-icon="mdi-magnify"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-col>
+        <v-col class="pa-1" cols="12" md="1" lg="1" xl="1">
+          <v-spacer></v-spacer>
+        </v-col>
+        <v-col class="pa-1" cols="3" md="2" lg="2" xl="2">
+          <v-btn-toggle
+            class="pa-0 ma-0"
+            v-model="toggle_multiple"
+            dense
+            tile
+            multiple
+          >
+            <v-btn 
+              :value="1"
+              text
+              width="100%"
+            >
+              <span class="hidden-sm-and-down">sFilter1</span>
+              <v-icon right>mdi-format-color-fill</v-icon>
+            </v-btn>
+
+            <v-btn
+              :value="2"
+              text
+              width="100%"
+            >
+              <span class="hidden-sm-and-down">sFilter2</span>
+              <v-icon right>mdi-format-color-fill</v-icon>
+            </v-btn>
+
+            <v-btn
+              :value="3"
+              text
+              width="100%"
+            >
+              <span class="hidden-sm-and-down">sFilter3</span>
+              <v-icon right>mdi-format-color-fill</v-icon>
+            </v-btn>
+
+            <v-btn
+              :value="4"
+              text
+              width="100%"
+            >
+              <span class="hidden-sm-and-down">sFilter4</span>
+              <v-icon right>mdi-format-color-fill</v-icon>
+            </v-btn>
+          </v-btn-toggle>
+        </v-col>
+      </v-row>  
       <v-row dense class="pa-0 ma-0">
         <v-col class="pa-1" cols="12" md="3" lg="3" xl="3">
           <v-select
@@ -83,67 +143,7 @@
             />
           </v-menu>
         </v-col>
-      </v-row>
-      <v-row dense class="pa-0 ma-0">             
-        <v-col class="pa-1" cols="12" md="3" lg="3" xl="3">
-          <v-text-field
-            v-model="search"
-            class="pa-0 ma-0 mb-1"
-            append-icon="mdi-magnify"
-            label="Search"
-            single-line
-            hide-details
-          ></v-text-field>
-        </v-col>
-        <v-col class="pa-1" cols="12" md="1" lg="1" xl="1">
-          <v-spacer></v-spacer>
-        </v-col>
-        <v-col class="pa-1" cols="3" md="2" lg="2" xl="2">
-          <v-btn-toggle
-            class="pa-0 ma-0"
-            v-model="toggle_multiple"
-            dense
-            tile
-            multiple
-          >
-            <v-btn 
-              :value="1"
-              text
-              width="100%"
-            >
-              <span class="hidden-sm-and-down">sFilter1</span>
-              <v-icon right>mdi-format-color-fill</v-icon>
-            </v-btn>
-
-            <v-btn
-              :value="2"
-              text
-              width="100%"
-            >
-              <span class="hidden-sm-and-down">sFilter2</span>
-              <v-icon right>mdi-format-color-fill</v-icon>
-            </v-btn>
-
-            <v-btn
-              :value="3"
-              text
-              width="100%"
-            >
-              <span class="hidden-sm-and-down">sFilter3</span>
-              <v-icon right>mdi-format-color-fill</v-icon>
-            </v-btn>
-
-            <v-btn
-              :value="4"
-              text
-              width="100%"
-            >
-              <span class="hidden-sm-and-down">sFilter4</span>
-              <v-icon right>mdi-format-color-fill</v-icon>
-            </v-btn>
-          </v-btn-toggle>
-        </v-col>
-      </v-row>          
+      </v-row>        
     </v-card-title>
 
     <v-data-table
