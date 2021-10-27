@@ -275,20 +275,20 @@ export default {
         },
         
         initFilters() {
-        for (let col in this.filters) {
-            this.filters[col] = this.desserts.map((d) => { return d[col] }).filter(
-            (value, index, self) => { return self.indexOf(value) === index }
-            )
-        }
-        // TODO restore previous activeFilters before add/remove item
-        this.activeFilters = Object.assign({}, this.filters)
-        /*if (Object.keys(this.activeFilters).length === 0) this.activeFilters = Object.assign({}, this.filters)
-        else {
-            setTimeout(() => {
-            console.log(this.activeFilters)
-            //this.activeFilters = Object.assign({}, this.filters)
-            }, 1)
-        }*/
+            for (let col in this.filters) {
+                this.filters[col] = this.desserts.map((d) => { return d[col] }).filter(
+                (value, index, self) => { return self.indexOf(value) === index }
+                )
+            }
+            // TODO restore previous activeFilters before add/remove item
+            this.activeFilters = Object.assign({}, this.filters)
+            /*if (Object.keys(this.activeFilters).length === 0) this.activeFilters = Object.assign({}, this.filters)
+            else {
+                setTimeout(() => {
+                console.log(this.activeFilters)
+                //this.activeFilters = Object.assign({}, this.filters)
+                }, 1)
+            }*/
         },
         
         toggleAll (col) {
