@@ -1,6 +1,6 @@
 <template>
-  <v-card class="pa-3">
-    <v-card-title>
+  <v-card>
+    <v-card-title dense color='yellow'>
       주문목록
       <v-spacer></v-spacer>
       <v-text-field
@@ -11,7 +11,7 @@
         hide-details
       ></v-text-field>
 
-      <v-container>
+      <v-container dense class="pa-0 ma-0">
         <v-file-input
           v-model="files"
           accept="text/csv"
@@ -20,6 +20,7 @@
           multiple
           prepend-icon="mdi-paperclip"
           @change="parsefile"
+          hide-details
         >
           <template v-slot:selection="{ text }">
             <v-chip

@@ -1,149 +1,181 @@
 <template>
   <v-card>
     <v-card-title dense color='yellow'>
-      <v-row dense class="pa-0 ma-0">             
-        <v-col class="pa-1" cols="12" md="3" lg="3" xl="3">
-          <v-text-field
-            v-model="search"
-            class="pa-0 ma-0 mb-1"
-            append-icon="mdi-magnify"
-            label="Search"
-            single-line
-            hide-details
-          ></v-text-field>
-        </v-col>
-        <v-col class="pa-1" cols="12" md="1" lg="1" xl="1">
-          <v-spacer></v-spacer>
-        </v-col>
-        <v-col class="pa-1" cols="3" md="2" lg="2" xl="2">
-          <v-btn-toggle
-            class="pa-0 ma-0"
-            v-model="toggle_multiple"
-            dense
-            tile
-            multiple
-          >
-            <v-btn 
-              :value="1"
-              text
-              width="100%"
+      <v-container dense class="pa-0 ma-0">
+        <v-row dense class="pa-0 ma-0">             
+          <v-col class="pa-1" cols="12" md="3" lg="3" xl="3">
+            <v-text-field
+              v-model="search"
+              class="pa-0 ma-0 mb-1"
+              append-icon="mdi-magnify"
+              label="Search"
+              single-line
+              hide-details
+            ></v-text-field>
+          </v-col>
+          <v-col class="pa-1" cols="12" md="1" lg="1" xl="1">
+            <v-spacer></v-spacer>
+          </v-col>
+          <v-col class="pa-1" cols="3" md="2" lg="2" xl="2">
+            <v-btn-toggle
+              class="pa-0 ma-0"
+              v-model="toggle_multiple"
+              dense
+              tile
+              multiple
             >
-              <span class="hidden-sm-and-down">sFilter1</span>
-              <v-icon right>mdi-format-color-fill</v-icon>
-            </v-btn>
+              <v-btn 
+                :value="1"
+                text
+                width="100%"
+              >
+                <span class="hidden-sm-and-down">출력</span>
+                <v-icon right>mdi-qrcode</v-icon>
+              </v-btn>
 
-            <v-btn
-              :value="2"
-              text
-              width="100%"
-            >
-              <span class="hidden-sm-and-down">sFilter2</span>
-              <v-icon right>mdi-format-color-fill</v-icon>
-            </v-btn>
+              <v-btn
+                :value="2"
+                text
+                width="100%"
+              >
+                <span class="hidden-sm-and-down">엑셀</span>
+                <v-icon right>mdi-microsoft-excel</v-icon>
+              </v-btn>
 
-            <v-btn
-              :value="3"
-              text
-              width="100%"
-            >
-              <span class="hidden-sm-and-down">sFilter3</span>
-              <v-icon right>mdi-format-color-fill</v-icon>
-            </v-btn>
+              <v-btn
+                :value="3"
+                text
+                width="100%"
+              >
+                <span class="hidden-sm-and-down">발송</span>
+                <v-icon right>mdi-send</v-icon>
+              </v-btn>
 
-            <v-btn
-              :value="4"
-              text
-              width="100%"
+              <v-btn
+                :value="4"
+                text
+                width="100%"
+              >
+                <span class="hidden-sm-and-down">취소</span>
+                <v-icon right>mdi-archive-lock-outline</v-icon>
+              </v-btn>
+            </v-btn-toggle>
+          </v-col>
+        </v-row>  
+      </v-container>
+      <v-container dense class="pa-0 ma-0 mt-1" justify-space-between >
+        <v-row dense class="pa-0 ma-0">
+          <v-col class="pa-1" cols="12" md="2" lg="2" xl="2">
+            <v-select
+              dense
+              v-model="dropdown_status_default"
+              :items="dropdown_status"
+              label="상품상태"
+              class="pa-0 ma-0 pt-1"                
+              item-text="text"
+              item-value="abbr"
+              hide-details
+              overflow
+              :disabled="statusable"
+              @change="changeStatus"
+            ></v-select>
+          </v-col>    
+          <v-col class="pa-1" cols="12" md="1" lg="1" xl="1">
+            <v-spacer></v-spacer>
+          </v-col>      
+          <v-col class="pa-1" cols="12" md="2" lg="2" xl="2">
+            <v-menu
+              ref="menuFrom"
+              v-model="menuFrom"
+              :close-on-content-click="false"
+              transition="scale-transition"
+              offset-y
+              max-width="290px"
+              min-width="290px"
             >
-              <span class="hidden-sm-and-down">sFilter4</span>
-              <v-icon right>mdi-format-color-fill</v-icon>
-            </v-btn>
-          </v-btn-toggle>
-        </v-col>
-      </v-row>  
-      <v-row dense class="pa-0 ma-0">
-        <v-col class="pa-1" cols="12" md="3" lg="3" xl="3">
-          <v-select
-            dense
-            v-model="dropdown_status_default"
-            :items="dropdown_status"
-            label="검색 상품상태"
-            class="pa-0 ma-0 pt-1"                
-            item-text="text"
-            item-value="abbr"
-            hide-details
-            overflow
-            :disabled="statusable"
-            @change="changeStatus"
-          ></v-select>
-        </v-col>    
-        <v-col class="pa-1" cols="12" md="3" lg="3" xl="3">
-          <v-spacer></v-spacer>
-        </v-col>      
-        <v-col class="pa-1" cols="12" md="3" lg="3" xl="3">
-          <v-menu
-            ref="menuFrom"
-            v-model="menuFrom"
-            :close-on-content-click="false"
-            transition="scale-transition"
-            offset-y
-            max-width="290px"
-            min-width="290px"
-          >
-            <template class="pa-0 ma-0" v-slot:activator="{ on, attrs }">
-              <v-text-field
-                class="pa-0 ma-0"
-                v-model="dateFrom"
-                label="From"
-                append-icon="mdi-calendar"
-                v-bind="attrs"
-                v-on="on"
-                hide-details
-            />
-            </template>
-            <v-date-picker         
-              v-model="datesRange"
-              color="green"             
-              :max="maxDate"
-              no-title
-              range
-              @input="menuFrom = false"
-            />
-          </v-menu>
-        </v-col>           
-        <v-col class="pa-1" cols="12" md="3" lg="3" xl="3">
-          <v-menu
-            ref="menuTo"
-            v-model="menuTo"
-            :close-on-content-click="false"
-            transition="scale-transition"
-            offset-y
-            max-width="290px"
-            min-width="290px"
-          >
-            <template class="pa-0 ma-0" v-slot:activator="{ on, attrs }">
-              <v-text-field
-                class="pa-0 ma-0"
-                v-model="dateTo"
-                label="To"
-                append-icon="mdi-calendar"
-                v-bind="attrs"
-                v-on="on"
-                hide-details
+              <template class="pa-0 ma-0" v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  class="pa-0 ma-0"
+                  v-model="dateFrom"
+                  label="From"
+                  append-icon="mdi-calendar"
+                  v-bind="attrs"
+                  v-on="on"
+                  hide-details
               />
-            </template>
-            <v-date-picker
-              v-model="datesRange"
-              color="green"
-              no-title
-              range
-              @input="menuTo = false"
-              :min="minCurrentMonth"
-              :max="maxDate"
-            />
-          </v-menu>
-        </v-col>
-      </v-row>        
+              </template>
+              <v-date-picker         
+                v-model="datesRange"
+                color="green"             
+                :max="maxDate"
+                no-title
+                range
+                @input="menuFrom = false"
+              />
+            </v-menu>
+          </v-col>           
+          <v-col class="pa-1" cols="12" md="2" lg="2" xl="2">
+            <v-menu
+              ref="menuTo"
+              v-model="menuTo"
+              :close-on-content-click="false"
+              transition="scale-transition"
+              offset-y
+              max-width="290px"
+              min-width="290px"
+            >
+              <template class="pa-0 ma-0" v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  class="pa-0 ma-0"
+                  v-model="dateTo"
+                  label="To"
+                  append-icon="mdi-calendar"
+                  v-bind="attrs"
+                  v-on="on"
+                  hide-details
+                />
+              </template>
+              <v-date-picker
+                v-model="datesRange"
+                color="green"
+                no-title
+                range
+                @input="menuTo = false"
+                :min="minCurrentMonth"
+                :max="maxDate"
+              />
+            </v-menu>
+          </v-col>
+          <v-col class="pa-1" cols="12" md="1" lg="1" xl="1">
+            <v-spacer></v-spacer>
+          </v-col>  
+          <v-col class="pa-1" cols="12" md="2" lg="2" xl="2">
+            <v-btn-toggle
+              class="pa-0 ma-0"
+              v-model="toggle_multiple2"
+              dense
+              tile
+              multiple
+            >
+              <v-btn 
+                text
+                width="100%"
+              >
+                <span class="hidden-sm-and-down">조회</span>
+                <v-icon right>mdi-magnify</v-icon>
+              </v-btn>
+
+              <v-btn
+                text
+                width="100%"
+              >
+                <span class="hidden-sm-and-down">보류건확인</span>
+                <v-icon right>mdi-archive-cancel-outline</v-icon>
+              </v-btn>
+            </v-btn-toggle>
+          </v-col>
+        </v-row>    
+      </v-container>    
     </v-card-title>
 
     <v-data-table
@@ -373,6 +405,7 @@ import Util from '@/util';
         
         // Multi Button
         toggle_multiple: [1, 2],
+        toggle_multiple2: [2],
 
         // 검색기간 
         datesRange: [],
