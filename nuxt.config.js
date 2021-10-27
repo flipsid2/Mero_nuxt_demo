@@ -1,7 +1,7 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'Nuxt Movie App',
+    title: 'Maero App',
     htmlAttrs: {
       lang: 'ko'
     },
@@ -11,8 +11,8 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
       { hid: 'og:type', property: 'og:type', content: 'website' },
-      { hid: 'og:site_name', property: 'og:site_name', content: 'Nuxt Movie App' },
-      { hid: 'og:title', property: 'og:title', content: 'Nuxt Movie App / Search' },
+      { hid: 'og:site_name', property: 'og:site_name', content: 'Maero App' },
+      { hid: 'og:title', property: 'og:title', content: 'Maero App / Search' },
       { hid: 'og:description', property: 'og:description', content: 'The OMDb API is a web service.' },
       { hid: 'og:image', property: 'og:image', content: 'https://heropy.blog/css/images/logo.png' },
       { hid: 'og:url', property: 'og:url', content: process.env.CLIENT_URL }

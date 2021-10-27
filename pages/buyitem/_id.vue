@@ -18,7 +18,7 @@
         fixed />
     </template>
     <template v-else
-      class="movie-details">
+      class="maero-details">
       <!-- <div class="poster"></div> -->
       <div class="specs">
         <v-row justify="space-between">
@@ -170,7 +170,7 @@ export default {
     }
   }
 }
-.movie-details {
+.maero-details {
   display: flex;
   color: $gray-600;
   .poster {

@@ -4,7 +4,7 @@ var qs = require('querystring');
 
 
 export default {
-  // 현재 파일(movie.js)을 Store 모듈로 활용하려면 다음 옵션이 필요합니다.
+  // 현재 파일을 Store 모듈로 활용하려면 다음 옵션이 필요합니다.
   namespaced: true,
 
   // Vue.js data 옵션과 유사합니다.
