@@ -49,7 +49,7 @@ export default {
         const res = await _getBuylist({
           ...payload
         })
-        console.log('result : ', res.data)
+        // console.log('result : ', res.data)
         const { Header, Search } = res.data
 
         commit('updateState', {
@@ -73,13 +73,13 @@ export default {
         loading: true
       })
 
-      console.log('getBuylistWithId : ', payload )
+      // console.log('getBuylistWithId : ', payload )
 
       try {
         const res = await _getBuylistWithId({
           ...payload
         })
-        console.log('getBuylistWithId result(Id) : ', res.data)
+        // console.log('getBuylistWithId result(Id) : ', res.data)
         const { Header, Search } = res.data
 
         commit('updateState', {
@@ -107,7 +107,7 @@ export default {
         })
         if (res.status === 200) {
           // 성공시
-          console.log('setUpdateBuylist success :' + res.data)
+          // console.log('setUpdateBuylist success :' + res.data)
           commit('updateBuylist', {
             row: row,
             item: item
@@ -129,7 +129,7 @@ export default {
         })
         if (res.status === 200) {
           // 성공시
-          console.log('setAddBuylist success :' + res.data)
+          // console.log('setAddBuylist success :' + res.data)
           commit('addBuylist', {
             item: item
           })
@@ -150,7 +150,7 @@ export default {
         })
         if (res.status === 200) {
           // 성공시
-          console.log('setDelBuylist success :' + res.data)
+          // console.log('setDelBuylist success :' + res.data)
           commit('deleteBuylist', {
             item: item
           })
@@ -172,7 +172,7 @@ async function _getBuylist(payload) {
     ? '/api/maero/buylist/R'
     : `${process.env.CLIENT_URL}/api/maero/buylist/R`
   
-  console.log('_getBuylist       : ', payload.b_order_id, ' url : ', url)
+  // console.log('_getBuylist       : ', payload.b_order_id, ' url : ', url)
   return await axios.post(url, payload)
 }
 
@@ -182,7 +182,7 @@ async function _getBuylistWithId(payload) {
     : `${process.env.CLIENT_URL}/api/maero/buylist/I`;
     // : `http://localhost:3000/api/maero/buylist/I`
 
-  console.log('_getBuylistWithId : ', payload.b_order_id, ' url : ', url)
+  // console.log('_getBuylistWithId : ', payload.b_order_id, ' url : ', url)
   return await axios.post(url, payload)
 }
 

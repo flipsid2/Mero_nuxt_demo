@@ -3,7 +3,6 @@
     color="primary"
     fixed
     dark
-    app
   >
     <v-btn icon @click="toggleDrawer()">
       <v-icon>mdi-menu</v-icon>

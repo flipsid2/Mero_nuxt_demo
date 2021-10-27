@@ -1,4 +1,4 @@
-# nuxt-movie-app
+# nuxt-maero-app
 
 ## Build Setup
 

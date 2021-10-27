@@ -476,10 +476,10 @@ import Util from '@/util';
         max100chars: v => v.length <= 100 || 'Input too long!',
         
         // Dialog 사용 일자/일시 변수
-        // date: null,
-        // menu: false,
-        // time: null,
-        // menu2: false,
+        date: null,
+        menu: false,
+        time: null,
+        menu2: false,
 
         // Filter
         // filters: { 
@@ -618,7 +618,7 @@ import Util from '@/util';
     
       save () {
         if (this.editedIndex > -1) {
-          console.log('editedItem(', this.editedIndex, ') : ', this.editedItem)
+          // console.log('editedItem(', this.editedIndex, ') : ', this.editedItem)
 
           this.editedItem.b_waybill_date = (this.editedItem.b_waybill) ? `${this.date} ${this.time}` : ''
           this.$store.dispatch('buylist/setUpdateBuylist', {
